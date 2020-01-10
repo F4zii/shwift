@@ -58,5 +58,4 @@ def saveFileDialog():
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
     fileName, _ = QFileDialog.getSaveFileName(None, "QFileDialog.getSaveFileName()","","All Files (*);;Text Files (*.txt)", options=options)
-    if fileName:
-        print(fileName)
+    return fileName
