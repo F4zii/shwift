@@ -81,7 +81,7 @@ class TabWidget(QTabWidget):
     def create_tab(self, name: str = "tab", closable: bool = True):
         tab = Tab()
         tab.setObjectName(name)
-        self.addTab(self.tab, "")
+        self.addTab(tab, "")
 
     def removeTab(self, index):
         widget = self.widget(index)
