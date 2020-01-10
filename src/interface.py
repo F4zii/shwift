@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         self.textEdit.setFont(font)
         self.textEdit.setObjectName("textEdit")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(180, 0, 281, 21))
+        self.tabWidget.setGeometry(QtCore.QRect(180, 0, 281, 101))
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuView.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

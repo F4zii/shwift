@@ -16,7 +16,7 @@ from PyQt5.QtGui import *
 # from pygments import highlight
 # from pygments.formatters import BBCodeFormatter
 
-from utils import load_project_structure
+from utils import load_filesystem_view
 
 from widgets import Popup, TabWidget
 
@@ -55,17 +55,17 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(180, 40, 1650, 850))
+        self.textEdit.setGeometry(QtCore.QRect(180, 30, 1650, 850))
         font = QtGui.QFont()
         font.setFamily("Consolas")
         font.setPointSize(16)
         self.textEdit.setFont(font)
         self.tabs = TabWidget(self.centralwidget)
-        self.tabs.setGeometry(QtCore.QRect(180, 0, 270, 20))
+        self.tabs.setGeometry(QtCore.QRect(180, 0, 280, 100))
         self.tabs.tabCloseRequested.connect(self.tabs.remove_tab)
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
-        self.tabs.raise_()
+        self.tabs.lower()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
         self.tab = self.tabs.create_tab("tab")
@@ -75,7 +75,7 @@ class Ui_MainWindow(object):
         self.treeView.setHeaderLabel('File System')
         self.treeView.setGeometry(QtCore.QRect(20, 40, 140, 850))
 
-        load_project_structure(os.path.dirname(os.path.realpath(__file__)), self.treeView)
+        load_filesystem_view(os.path.dirname(os.path.realpath(__file__)), self.treeView)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -228,5 +228,6 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    # MainWindow.setContentsMargins(10, 10, 10, 10)
     MainWindow.show()
     sys.exit(app.exec_())
