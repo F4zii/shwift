@@ -79,9 +79,12 @@ class TabWidget(QTabWidget):
         self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
         
     def create_tab(self, name: str = "tab", closable: bool = True):
+        self.tabs.setTabText(self.tabs.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
         tab = Tab()
         tab.setObjectName(name)
         self.addTab(tab, "")
+        self.setTabText(self.indexOf(tab), _translate("MainWindow", name))
+
 
     def removeTab(self, index):
         print("Index: " + str(index))
