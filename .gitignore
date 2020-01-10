@@ -126,3 +126,4 @@ dmypy.json
 .vscode/settings.json
 shwift.code-workspace
 src/interface.py
+src/untitled.ui

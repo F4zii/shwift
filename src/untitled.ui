@@ -36,11 +36,11 @@
       <x>180</x>
       <y>0</y>
       <width>281</width>
-      <height>21</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
