@@ -55,7 +55,6 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(180, 40, 1650, 850))
-        self.textEdits = dict()  # filename: QTextEdit
         font = QtGui.QFont()
         font.setFamily("Consolas")
         font.setPointSize(16)
