@@ -87,7 +87,6 @@ class TabWidget(QTabWidget):
 
 
     def remove_tab(self, index):
-        print("Index: " + str(index))
         widget = self.widget(index)
         if widget is not None:
             widget.deleteLater()
