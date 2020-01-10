@@ -3,6 +3,20 @@ from PyQt5.QtCore import *
 
 import sys
 
+
+
+class Popup(QWidget):
+    def __init__(self):
+        QWidget.__init__(self)
+
+    def paintEvent(self, e):
+        dc = QPainter(self)
+        dc.drawLine(0, 0, 100, 100)
+        dc.drawLine(100, 0, 0, 100)
+
+
+
+
 class TreeFileWidget(QWidget):
     def __init__(self, *args, **kwargs):
         QWidget.__init__(self, *args, **kwargs)
