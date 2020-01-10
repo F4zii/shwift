@@ -67,9 +67,9 @@ class Ui_MainWindow(object):
         self.tabs.raise_()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
+        self.tab = self.tabs.create_tab("tab")
         self.tabs.addTab(self.tab, "")
+        print(self.tab)
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.tabs.addTab(self.tab_2, "")
