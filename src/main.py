@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'untitled.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.0
-#
-# WARNING! All changes made in this file will be lost!
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QGridLayout
@@ -22,29 +14,31 @@ import qdarkstyle
 
 from utils import load_filesystem_view
 
-from widgets import Popup, TabWidget
+from widgets import Popup, TabWidget, Editor
 
 
 import sys
 import os
 
 import utils
+from utils import DIR_ICON_PATH, FILE_ICON_PATH
 
-DIR_ICON_PATH = 'src/assets/folder.ico'
-FILE_ICON_PATH = 'src/assets/file.ico'
+from tools import Terminal
 
 class Ui_MainWindow(object):
-
+    def __init__(self):
+        super().__init__()
+        self.translate = QtCore.QCoreApplication.translate
 
     def open_file(self):
         filename = utils.openFileNameDialog()
         if not filename:
             return
         with open(str(filename), 'r') as f:
-            self.textEdit.setText(f.read())
-        # self.tabs[filename] = QtWidgets.QWidget()
-        # self.tabs[filename].setObjectName(filename)
-
+            tab = self.tabs.create_tab(name=os.path.basename(filename))
+            e = Editor(tab)
+            e.setText(self.translate("MainWindow", f.read()))
+            
     def save_file(self):
         f = utils.saveFileDialog()
         if not f:
@@ -62,13 +56,13 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(180, 30, 1650, 850))
+        self.textEdit.setGeometry(QtCore.QRect(190, 40, 1650, 850))
         font = QtGui.QFont()
         font.setFamily("Consolas")
         font.setPointSize(16)
         self.textEdit.setFont(font)
         self.tabs = TabWidget(self.centralwidget)
-        self.tabs.setGeometry(QtCore.QRect(180, 0, 280, 100))
+        self.tabs.setGeometry(QtCore.QRect(190, 15, 280, 100))
         self.tabs.tabCloseRequested.connect(self.tabs.remove_tab)
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
@@ -80,11 +74,14 @@ class Ui_MainWindow(object):
 
         self.treeView = QtWidgets.QTreeWidget(self.centralwidget)
         self.treeView.setHeaderLabel('File System')
-        self.treeView.setGeometry(QtCore.QRect(20, 40, 140, 850))
-        self.mainLayout.addWidget(self.treeView)
-        self.mainLayout.addWidget(self.tabs)
-        self.mainLayout.addWidget(self.textEdit)
-
+        self.treeView.setGeometry(QtCore.QRect(50, 40, 140, 850))
+        # self.mainLayout.addWidget(self.treeView)
+        # self.mainLayout.addWidget(self.tabs)
+        # self.mainLayout.addWidget(self.textEdit)
+        # self.terminal = Terminal()
+        # self.terminal = Terminal(self.centralwidget)
+        # self.terminal.setup_command_box()
+        # utils.find_or_create_item(self, os.path.dirname(os.path.abspath(__file__)), self.centralwidget)
         load_filesystem_view(os.path.dirname(os.path.realpath(__file__)), self.treeView)
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -183,48 +180,47 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Shwift"))
-        # self.tabs.setTabText(self.tabs.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        # self.tabs.setTabText(self.tabs.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
-        self.menuFile.setTitle(_translate("MainWindow", "File"))
-        self.menuPreferences.setTitle(_translate("MainWindow", "Preferences"))
-        self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
-        self.menuView.setTitle(_translate("MainWindow", "View"))
-        self.actionNew.setText(_translate("MainWindow", "New"))
-        self.actionNew.setStatusTip(_translate("MainWindow", "Create a new file"))
-        self.actionNew.setShortcut(_translate("MainWindow", "Ctrl+N"))
-        self.actionOpen.setText(_translate("MainWindow", "Open"))
-        self.actionOpen.setStatusTip(_translate("MainWindow", "Open a file from your system"))
-        self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
+        MainWindow.setWindowTitle(self.translate("MainWindow", "Shwift"))
+        # self.tabs.setTabText(self.tabs.indexOf(self.tab), self.translate("MainWindow", "Tab 1"))
+        # self.tabs.setTabText(self.tabs.indexOf(self.tab_2), self.translate("MainWindow", "Tab 2"))
+        self.menuFile.setTitle(self.translate("MainWindow", "File"))
+        self.menuPreferences.setTitle(self.translate("MainWindow", "Preferences"))
+        self.menuEdit.setTitle(self.translate("MainWindow", "Edit"))
+        self.menuView.setTitle(self.translate("MainWindow", "View"))
+        self.actionNew.setText(self.translate("MainWindow", "New"))
+        self.actionNew.setStatusTip(self.translate("MainWindow", "Create a new file"))
+        self.actionNew.setShortcut(self.translate("MainWindow", "Ctrl+N"))
+        self.actionOpen.setText(self.translate("MainWindow", "Open"))
+        self.actionOpen.setStatusTip(self.translate("MainWindow", "Open a file from your system"))
+        self.actionOpen.setShortcut(self.translate("MainWindow", "Ctrl+O"))
         self.actionOpen.triggered.connect(self.open_file)
-        self.actionSave.setText(_translate("MainWindow", "Save"))
-        self.actionSave.setStatusTip(_translate("MainWindow", "Save the current working file"))
-        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
-        self.actionSave_As.setText(_translate("MainWindow", "Save-As"))
-        self.actionSave_As.setStatusTip(_translate("MainWindow", "Save the current working file as a new file in your system"))
-        self.actionSave_As.setShortcut(_translate("MainWindow", "Ctrl+Shift+S"))
-        self.actionUndo.setText(_translate("MainWindow", "Undo"))
-        self.actionUndo.setStatusTip(_translate("MainWindow", "Undo previous actions"))
-        self.actionUndo.setShortcut(_translate("MainWindow", "Ctrl+Z"))
-        self.actionRedo.setText(_translate("MainWindow", "Redo"))
-        self.actionRedo.setStatusTip(_translate("MainWindow", "Redo previous actions"))
-        self.actionRedo.setShortcut(_translate("MainWindow", "Ctrl+Y"))
-        self.actionCopy.setText(_translate("MainWindow", "Copy"))
-        self.actionCopy.setShortcut(_translate("MainWindow", "Ctrl+C"))
-        self.actionPaste.setText(_translate("MainWindow", "Paste"))
-        self.actionPaste.setShortcut(_translate("MainWindow", "Ctrl+V"))
-        self.actionCut.setText(_translate("MainWindow", "Cut"))
-        self.actionCut.setShortcut(_translate("MainWindow", "Ctrl+X"))
-        self.actionFind.setText(_translate("MainWindow", "Find"))
-        self.actionFind.setShortcut(_translate("MainWindow", "Ctrl+F"))
-        self.actionReplace.setText(_translate("MainWindow", "Replace"))
-        self.actionReplace.setShortcut(_translate("MainWindow", "Ctrl+R"))
-        self.actionSettings.setText(_translate("MainWindow", "Settings"))
-        self.actionKeyboard_Shortcuts.setText(_translate("MainWindow", "Keyboard-Shortcuts"))
-        self.actionColor_Theme.setText(_translate("MainWindow", "Color-Theme"))
-        self.actionToggle_Line_Numbers.setText(_translate("MainWindow", "Toggle Line Numbers"))
-        self.actionToggle_Line_Numbers.setShortcut(_translate("MainWindow", "Ctrl+L, N"))
+        self.actionSave.setText(self.translate("MainWindow", "Save"))
+        self.actionSave.setStatusTip(self.translate("MainWindow", "Save the current working file"))
+        self.actionSave.setShortcut(self.translate("MainWindow", "Ctrl+S"))
+        self.actionSave_As.setText(self.translate("MainWindow", "Save-As"))
+        self.actionSave_As.setStatusTip(self.translate("MainWindow", "Save the current working file as a new file in your system"))
+        self.actionSave_As.setShortcut(self.translate("MainWindow", "Ctrl+Shift+S"))
+        self.actionUndo.setText(self.translate("MainWindow", "Undo"))
+        self.actionUndo.setStatusTip(self.translate("MainWindow", "Undo previous actions"))
+        self.actionUndo.setShortcut(self.translate("MainWindow", "Ctrl+Z"))
+        self.actionRedo.setText(self.translate("MainWindow", "Redo"))
+        self.actionRedo.setStatusTip(self.translate("MainWindow", "Redo previous actions"))
+        self.actionRedo.setShortcut(self.translate("MainWindow", "Ctrl+Y"))
+        self.actionCopy.setText(self.translate("MainWindow", "Copy"))
+        self.actionCopy.setShortcut(self.translate("MainWindow", "Ctrl+C"))
+        self.actionPaste.setText(self.translate("MainWindow", "Paste"))
+        self.actionPaste.setShortcut(self.translate("MainWindow", "Ctrl+V"))
+        self.actionCut.setText(self.translate("MainWindow", "Cut"))
+        self.actionCut.setShortcut(self.translate("MainWindow", "Ctrl+X"))
+        self.actionFind.setText(self.translate("MainWindow", "Find"))
+        self.actionFind.setShortcut(self.translate("MainWindow", "Ctrl+F"))
+        self.actionReplace.setText(self.translate("MainWindow", "Replace"))
+        self.actionReplace.setShortcut(self.translate("MainWindow", "Ctrl+R"))
+        self.actionSettings.setText(self.translate("MainWindow", "Settings"))
+        self.actionKeyboard_Shortcuts.setText(self.translate("MainWindow", "Keyboard-Shortcuts"))
+        self.actionColor_Theme.setText(self.translate("MainWindow", "Color-Theme"))
+        self.actionToggle_Line_Numbers.setText(self.translate("MainWindow", "Toggle Line Numbers"))
+        self.actionToggle_Line_Numbers.setShortcut(self.translate("MainWindow", "Ctrl+L, N"))
 
         def initUI(self):      
             # formatting
