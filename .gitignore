@@ -125,3 +125,4 @@ dmypy.json
 .pyre/
 .vscode/settings.json
 shwift.code-workspace
+src/interface.py
