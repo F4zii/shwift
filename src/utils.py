@@ -20,13 +20,10 @@ def label_set_text(label, text: str):
 def load_project_structure(startpath, tree):
     """
     Load Project structure tree
-    :param startpath: 
-    :param tree: 
-    :return: 
+    @param startpath
+    @param tree
+    @return
     """
-    import os
-    from PyQt5.QtWidgets import QTreeWidgetItem
-    from PyQt5.QtGui import QIcon
     for element in os.listdir(startpath):
         path_info = startpath + "/" + element
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
@@ -59,3 +56,10 @@ def saveFileDialog():
     options |= QFileDialog.DontUseNativeDialog
     fileName, _ = QFileDialog.getSaveFileName(None, "QFileDialog.getSaveFileName()","","All Files (*);;Text Files (*.txt)", options=options)
     return fileName
+
+
+
+def get_file_name(curr_file):
+    here = os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.join(here, str(curr_file))
