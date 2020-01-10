@@ -37,8 +37,8 @@ class Ui_MainWindow(object):
             return
         with open(str(filename), 'r') as f:
             self.textEdit.setText(f.read())
-        self.tabs[filename] = QtWidgets.QWidget()
-        self.tabs[filename].setObjectName(filename)
+        # self.tabs[filename] = QtWidgets.QWidget()
+        # self.tabs[filename].setObjectName(filename)
 
     def save_file(self):
         f = utils.saveFileDialog()
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.menuPreferences.addAction(self.actionSettings)
         self.menuPreferences.addAction(self.actionKeyboard_Shortcuts)
         self.menuPreferences.addAction(self.actionColor_Theme)
-        
+
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
