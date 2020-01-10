@@ -35,10 +35,11 @@ class Ui_MainWindow(object):
         if not filename:
             return
         with open(str(filename), 'r') as f:
-            tab = self.tabs.create_tab(name=os.path.basename(filename))
-            e = Editor(tab)
+            e = Editor()
             e.setText(self.translate("MainWindow", f.read()))
+            tab = self.tabs.create_tab(e, name=os.path.basename(filename))
             
+
     def save_file(self):
         f = utils.saveFileDialog()
         if not f:
@@ -46,6 +47,8 @@ class Ui_MainWindow(object):
             self.popup.setGeometry(QRect(100, 100, 400, 200))
             self.popup.show()
 
+    def on_tab_change(self, i):
+        self.textEdit.setText(self.tabs.currentWidget().textEdit.toPlainText())  
 
  
     def setupUi(self, MainWindow):
@@ -67,10 +70,9 @@ class Ui_MainWindow(object):
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
+        self.tabs.currentChanged.connect(self.on_tab_change)
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
-        self.tab = self.tabs.create_tab("tab")
-        self.tab_2 = self.tabs.create_tab("tab2")
 
         self.treeView = QtWidgets.QTreeWidget(self.centralwidget)
         self.treeView.setHeaderLabel('File System')
