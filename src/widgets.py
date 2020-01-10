@@ -69,3 +69,20 @@ class TreeFileWidget(QWidget):
         path = self.dirModel.fileInfo(index).absoluteFilePath()
         self.listview.setRootIndex(self.fileModel.setRootPath(path))
 
+
+
+class TabWidget(QTabWidget):
+    def __init__(self, parent=None):
+        QTabWidget.__init__(self, parent)
+        self.parent = parent
+        self.textEdit = QTextEdit(self.parent)
+        self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
+
+
+    def removeTab(self, index):
+        widget = self.widget(index)
+        if widget is not None:
+            widget.deleteLater()
+        self.removeTab(index)
+    
+        
