@@ -86,7 +86,7 @@ class TabWidget(QTabWidget):
         self.setTabText(self.indexOf(tab), _translate("MainWindow", name))
 
 
-    def removeTab(self, index):
+    def remove_tab(self, index):
         print("Index: " + str(index))
         widget = self.widget(index)
         if widget is not None:
