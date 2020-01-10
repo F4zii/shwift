@@ -73,17 +73,19 @@ class Popup(QWidget):
 
 class TabWidget(QTabWidget):
     def __init__(self, parent=None):
-        QTabWidget.__init__(self, parent)
+        super(QTabWidget, self).__init__(parent)
         self.parent = parent
-        self.textEdit = QTextEdit(self.parent)
-        self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
+        # self.textEdit = QTextEdit(self.parent)
+        # self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
+        self.translate = QCoreApplication.translate
+
         
     def create_tab(self, name: str = "tab", closable: bool = True):
-        self.tabs.setTabText(self.tabs.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
         tab = Tab()
         tab.setObjectName(name)
+        # tab.padding
         self.addTab(tab, "")
-        self.setTabText(self.indexOf(tab), _translate("MainWindow", name))
+        self.setTabText(self.indexOf(tab), self.translate("MainWindow", name))
 
 
     def remove_tab(self, index):
@@ -95,7 +97,7 @@ class TabWidget(QTabWidget):
 
 class Tab(QWidget):
     def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
+        super(QWidget, self).__init__(parent)
         self.parent = parent
         self.textEdit = QTextEdit(self.parent)
         self.textEdit.setGeometry(QRect(180, 40, 1650, 850))    
@@ -103,3 +105,14 @@ class Tab(QWidget):
     def __str__(self):
         return self.textEdit.toPlainText()
         
+
+
+class Editor(QTextEdit):
+
+    def __init__(self, parent=None):
+        super(Editor, self).__init__(parent)
+
+
+    def new_(self):
+        tab = QtGui.QTextEdit(self.tab)
+        self.tab.addTab(tab, 'Untitled')
