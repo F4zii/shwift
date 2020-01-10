@@ -17,7 +17,7 @@ def label_set_text(label, text: str):
 
 
 
-def load_project_structure(startpath, tree):
+def load_filesystem_view(startpath, tree):
     """
     Load Project structure tree
     @param startpath
@@ -28,7 +28,7 @@ def load_project_structure(startpath, tree):
         path_info = startpath + "/" + element
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
         if os.path.isdir(path_info):
-            load_project_structure(path_info, parent_itm)
+            load_filesystem_view(path_info, parent_itm)
             parent_itm.setIcon(0, QIcon('assets/folder.ico'))
         else:
             parent_itm.setIcon(0, QIcon('assets/file.ico'))
