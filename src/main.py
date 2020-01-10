@@ -10,9 +10,17 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
 from PyQt5.QtCore import QDir
+from PyQt5.QtGui import *
+
+# from pygments.lexers import get_lexer_for_filename
+# from pygments import highlight
+# from pygments.formatters import BBCodeFormatter
+
+
 
 from utils import load_project_structure
 
+from widgets import Popup, TabWidget
 import sys
 import os
 
@@ -22,37 +30,54 @@ class Ui_MainWindow(object):
 
 
     def open_file(self):
-            file = utils.openFileNameDialog()
-            if not file:
-                return
-            with open(str(file), 'r') as f:
-                self.textEdit.setText(f.read())
+        filename = utils.openFileNameDialog()
+        if not filename:
+            return
+        with open(str(filename), 'r') as f:
+            self.textEdit.setText(f.read())
+        self.tabs[filename] = QtWidgets.QWidget()
+        self.tabs[filename].setObjectName(filename)
 
+    def save_file(self):
+        f = utils.saveFileDialog()
+        if not f:
+            self.popup = Popup()
+            self.popup.setGeometry(QRect(100, 100, 400, 200))
+            self.popup.show()
+
+
+    
 
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("Shwift")
-        MainWindow.resize(1906, 962)
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1400, 960)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(180, 40, 1650, 850))
-        self.textEdit.setObjectName("textEdit")
+        self.textEdits = dict()  # filename: QTextEdit
         font = QtGui.QFont()
         font.setFamily("Consolas")
         font.setPointSize(16)
         self.textEdit.setFont(font)
-        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(180, 0, 270, 20))
-        self.tabWidget.setObjectName("tabWidget")
+        self.tabs = TabWidget(self.centralwidget)
+        self.tabs.setGeometry(QtCore.QRect(180, 0, 270, 20))
+        self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
+        self.tabs.setObjectName("Tabs")
+        self.tabs.setTabsClosable(True)
+        self.tabs.raise_()
+        # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
+        # self.tabs = dict()   # filename: Tab
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
-        self.tabWidget.addTab(self.tab, "")
+        self.tabs.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
-        self.tabWidget.addTab(self.tab_2, "")
-        self.treeView = QtWidgets.QTreeView(self.centralwidget)
+        self.tabs.addTab(self.tab_2, "")
+        self.treeView = QtWidgets.QTreeWidget(self.centralwidget)
+        self.treeView.setHeaderLabel('File System')
         self.treeView.setGeometry(QtCore.QRect(20, 40, 140, 850))
-        # load_project_structure(os.path.dirname(os.path.realpath(__file__)), self.treeView)
+        load_project_structure(os.path.dirname(os.path.realpath(__file__)), self.treeView)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1900, 20))
@@ -75,6 +100,7 @@ class Ui_MainWindow(object):
         self.actionOpen.setObjectName("actionOpen")
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
+        self.actionSave.triggered.connect(self.save_file)
         self.actionSave_As = QtWidgets.QAction(MainWindow)
         self.actionSave_As.setObjectName("actionSave_As")
         self.actionUndo = QtWidgets.QAction(MainWindow)
@@ -120,14 +146,14 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuView.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Shwift"))
+        self.tabs.setTabText(self.tabs.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
+        self.tabs.setTabText(self.tabs.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuPreferences.setTitle(_translate("MainWindow", "Preferences"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
@@ -175,6 +201,7 @@ class Ui_MainWindow(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle("Fusion")
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
