@@ -9,8 +9,12 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
-from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QDir, QFile, QTextStream
 from PyQt5.QtGui import *
+
+import sys
+
+import qdarkstyle
 
 # from pygments.lexers import get_lexer_for_filename
 # from pygments import highlight
@@ -26,7 +30,8 @@ import os
 
 import utils
 
-
+DIR_ICON_PATH = 'src/assets/folder.ico'
+FILE_ICON_PATH = 'src/assets/file.ico'
 
 class Ui_MainWindow(object):
 
@@ -216,18 +221,65 @@ class Ui_MainWindow(object):
         self.actionToggle_Line_Numbers.setText(_translate("MainWindow", "Toggle Line Numbers"))
         self.actionToggle_Line_Numbers.setShortcut(_translate("MainWindow", "Ctrl+L, N"))
 
-        
+        def initUI(self):      
+            # formatting
+            self.resize(550, 400)
+            self.setWindowTitle("Toychest")
+
+            # widgets
+            self.toollist = QtGui.QTreeView()
+
+            # QTreeView use QStandardItemModel as data source
+            self.source_model = QtGui.QStandardItemModel()
+
+            # Tabs
+
+            # signals
+
+            # main layout
+            mainLayout = QtGui.QGridLayout()
+            mainLayout.setContentsMargins(0,0,0,0)
+            mainLayout.addWidget(self.toollist)
+            self.setLayout(mainLayout)
+            # set model for toollist
+            self.toollist.setModel(self.source_model)
+
+        def initDirectory(self, path):
+            new_item = newItem(path)
+            self.readDirectory(path, new_item)
+            self.source_model.appendRow(new_item)
+
+        def readDirectory(self, path, parent_item):
+            directory = os.listdir(path)
+            for file_name in directory:
+                file_path = path + '/' + file_name
+                new_item = newItem(file_path)
+                parent_item.appendRow(new_item)
+                if os.path.isdir(file_path):
+                    self.readDirectory(file_path, new_item)
+
+        def newItem(self, path):
+            title = os.path.basename(path)
+            item = QtGui.QStandardItem()
+            icon_path = FILE_ICON_PATH
+            if os.path.isdir(file_path):
+                icon_path = DIR_ICON_PATH
+            icon = QtGui.QIcon(icon_path)
+            item.setText(title)
+            item.setIcon(icon)
+            return item
+            
         # utils.openFileNameDialog()
         # utils.openFileNamesDialog()
         # utils.saveFileDialog()
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle("Fusion")
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     # MainWindow.setContentsMargins(10, 10, 10, 10)
     MainWindow.show()
     sys.exit(app.exec_())
