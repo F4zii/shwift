@@ -1,13 +1,16 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 import sys
+import os
 
+from utils import DIR_ICON_PATH, FILE_ICON_PATH
 
 
 class Popup(QWidget):
     def __init__(self):
-        QWidget.__init__(self)
+        super(QTabWidget, self).__init__(self)
 
     def paintEvent(self, e):
         dc = QPainter(self)
@@ -80,8 +83,8 @@ class TabWidget(QTabWidget):
         self.translate = QCoreApplication.translate
 
         
-    def create_tab(self, name: str = "tab", closable: bool = True):
-        tab = Tab()
+    def create_tab(self,  textEdit, name: str = "tab", closable: bool = True):
+        tab = Tab(textEdit=textEdit)
         tab.setObjectName(name)
         # tab.padding
         self.addTab(tab, "")
@@ -96,23 +99,16 @@ class TabWidget(QTabWidget):
 
 
 class Tab(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, textEdit, parent=None):
         super(QWidget, self).__init__(parent)
-        self.parent = parent
-        self.textEdit = QTextEdit(self.parent)
-        self.textEdit.setGeometry(QRect(180, 40, 1650, 850))    
-    
-    def __str__(self):
-        return self.textEdit.toPlainText()
-        
+        self.parent = parent 
+        self.textEdit = textEdit
 
 
 class Editor(QTextEdit):
 
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
+        self.setGeometry(QRect(180, 40, 1650, 850)) 
 
 
-    def new_(self):
-        tab = QtGui.QTextEdit(self.tab)
-        self.tab.addTab(tab, 'Untitled')
