@@ -16,15 +16,17 @@ from PyQt5.QtGui import *
 # from pygments import highlight
 # from pygments.formatters import BBCodeFormatter
 
-
-
 from utils import load_project_structure
 
 from widgets import Popup, TabWidget
+
+
 import sys
 import os
 
 import utils
+
+
 
 class Ui_MainWindow(object):
 
@@ -46,8 +48,7 @@ class Ui_MainWindow(object):
             self.popup.show()
 
 
-    
-
+ 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1400, 960)
@@ -61,72 +62,95 @@ class Ui_MainWindow(object):
         self.textEdit.setFont(font)
         self.tabs = TabWidget(self.centralwidget)
         self.tabs.setGeometry(QtCore.QRect(180, 0, 270, 20))
-        self.tabs.tabCloseRequested.connect(self.tabs.removeTab)
+        self.tabs.tabCloseRequested.connect(self.tabs.remove_tab)
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.raise_()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
         self.tab = self.tabs.create_tab("tab")
-        self.tabs.addTab(self.tab, "")
-        print(self.tab)
-        self.tab_2 = QtWidgets.QWidget()
-        self.tab_2.setObjectName("tab_2")
-        self.tabs.addTab(self.tab_2, "")
+        self.tab_2 = self.tabs.create_tab("tab2")
+
         self.treeView = QtWidgets.QTreeWidget(self.centralwidget)
         self.treeView.setHeaderLabel('File System')
         self.treeView.setGeometry(QtCore.QRect(20, 40, 140, 850))
+
         load_project_structure(os.path.dirname(os.path.realpath(__file__)), self.treeView)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1900, 20))
         self.menubar.setObjectName("menubar")
+
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
+
         self.menuPreferences = QtWidgets.QMenu(self.menuFile)
         self.menuPreferences.setObjectName("menuPreferences")
+
         self.menuEdit = QtWidgets.QMenu(self.menubar)
         self.menuEdit.setObjectName("menuEdit")
+
         self.menuView = QtWidgets.QMenu(self.menubar)
         self.menuView.setObjectName("menuView")
+
         MainWindow.setMenuBar(self.menubar)
+
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
+
         MainWindow.setStatusBar(self.statusbar)
+
         self.actionNew = QtWidgets.QAction(MainWindow)
         self.actionNew.setObjectName("actionNew")
+
         self.actionOpen = QtWidgets.QAction(MainWindow)
         self.actionOpen.setObjectName("actionOpen")
+
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
         self.actionSave.triggered.connect(self.save_file)
+
         self.actionSave_As = QtWidgets.QAction(MainWindow)
         self.actionSave_As.setObjectName("actionSave_As")
+
         self.actionUndo = QtWidgets.QAction(MainWindow)
         self.actionUndo.setObjectName("actionUndo")
+
         self.actionRedo = QtWidgets.QAction(MainWindow)
         self.actionRedo.setObjectName("actionRedo")
+
         self.actionCopy = QtWidgets.QAction(MainWindow)
         self.actionCopy.setObjectName("actionCopy")
+
         self.actionPaste = QtWidgets.QAction(MainWindow)
         self.actionPaste.setObjectName("actionPaste")
+
         self.actionCut = QtWidgets.QAction(MainWindow)
         self.actionCut.setObjectName("actionCut")
+
         self.actionFind = QtWidgets.QAction(MainWindow)
         self.actionFind.setObjectName("actionFind")
+
         self.actionReplace = QtWidgets.QAction(MainWindow)
         self.actionReplace.setObjectName("actionReplace")
+
         self.actionSettings = QtWidgets.QAction(MainWindow)
         self.actionSettings.setObjectName("actionSettings")
+        
         self.actionKeyboard_Shortcuts = QtWidgets.QAction(MainWindow)
         self.actionKeyboard_Shortcuts.setObjectName("actionKeyboard_Shortcuts")
+
         self.actionColor_Theme = QtWidgets.QAction(MainWindow)
         self.actionColor_Theme.setObjectName("actionColor_Theme")
+
         self.actionToggle_Line_Numbers = QtWidgets.QAction(MainWindow)
         self.actionToggle_Line_Numbers.setObjectName("actionToggle_Line_Numbers")
+
         self.menuPreferences.addAction(self.actionSettings)
         self.menuPreferences.addAction(self.actionKeyboard_Shortcuts)
         self.menuPreferences.addAction(self.actionColor_Theme)
+        
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
@@ -151,8 +175,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Shwift"))
-        self.tabs.setTabText(self.tabs.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        self.tabs.setTabText(self.tabs.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
+        # self.tabs.setTabText(self.tabs.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
+        # self.tabs.setTabText(self.tabs.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuPreferences.setTitle(_translate("MainWindow", "Preferences"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
