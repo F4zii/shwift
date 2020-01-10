@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QGridLayout
 from PyQt5.QtCore import QDir, QFile, QTextStream
 from PyQt5.QtGui import *
 
@@ -56,7 +56,9 @@ class Ui_MainWindow(object):
  
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1400, 960)
+        MainWindow.resize(800, 800)
+        self.mainLayout = QGridLayout()
+        self.mainLayout.setContentsMargins(0,0,0,0)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
@@ -79,6 +81,9 @@ class Ui_MainWindow(object):
         self.treeView = QtWidgets.QTreeWidget(self.centralwidget)
         self.treeView.setHeaderLabel('File System')
         self.treeView.setGeometry(QtCore.QRect(20, 40, 140, 850))
+        self.mainLayout.addWidget(self.treeView)
+        self.mainLayout.addWidget(self.tabs)
+        self.mainLayout.addWidget(self.textEdit)
 
         load_filesystem_view(os.path.dirname(os.path.realpath(__file__)), self.treeView)
 
