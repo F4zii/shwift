@@ -5,7 +5,8 @@ from PyQt5.QtGui import QIcon
 import os
 import sys
 
-
+DIR_ICON_PATH = r'C:\Users\iddos.DESKTOP-JTOR36M\Documents\GitHub\Shwift-Text-Editor\src\assets\folder.ico'
+FILE_ICON_PATH = r'C:\Users\iddos.DESKTOP-JTOR36M\Documents\GitHub\Shwift-Text-Editor\src\assets\file.ico'
 
 def create_label(window, name: str):
     return QtWidgets.QLabel(window).setText(name)
@@ -14,6 +15,7 @@ def create_label(window, name: str):
 def label_set_text(label, text: str):
     label.setText(text)
     label.adjustSize()
+
 
 
 
@@ -29,9 +31,9 @@ def load_filesystem_view(startpath, tree):
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
         if os.path.isdir(path_info):
             load_filesystem_view(path_info, parent_itm)
-            parent_itm.setIcon(0, QIcon('assets/folder.ico'))
+            parent_itm.setIcon(0, QIcon(DIR_ICON_PATH))
         else:
-            parent_itm.setIcon(0, QIcon('assets/file.ico'))
+            parent_itm.setIcon(0, QIcon(FILE_ICON_PATH))
 
 
 
