@@ -32,8 +32,11 @@ def load_filesystem_view(startpath, tree):
         if os.path.isdir(path_info):
             load_filesystem_view(path_info, parent_itm)
             parent_itm.setIcon(0, QIcon(DIR_ICON_PATH))
+            # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
+
         else:
             parent_itm.setIcon(0, QIcon(FILE_ICON_PATH))
+            # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
 
 
 
