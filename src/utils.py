@@ -2,8 +2,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QInputDialog, QLineEdit, QFileDialog, QTreeWidgetItem
 from PyQt5.QtGui import QIcon
 
-import os
-import sys
+import glob, os
 
 DIR_ICON_PATH = r'C:\Users\iddos.DESKTOP-JTOR36M\Documents\GitHub\Shwift-Text-Editor\src\assets\folder.ico'
 FILE_ICON_PATH = r'C:\Users\iddos.DESKTOP-JTOR36M\Documents\GitHub\Shwift-Text-Editor\src\assets\file.ico'
@@ -15,6 +14,16 @@ def create_label(window, name: str):
 def label_set_text(label, text: str):
     label.setText(text)
     label.adjustSize()
+
+
+ICONS = {
+    'py' : 'python.ico',
+    'js' : 'javascript.ico',
+    'c' : 'c.ico',
+    'cpp' : 'cpp.ico',
+    'cs' : 'csharp.ico',
+    'java' : 'java.ico'
+}
 
 
 
@@ -35,9 +44,14 @@ def load_filesystem_view(startpath, tree):
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
 
         else:
-            parent_itm.setIcon(0, QIcon(FILE_ICON_PATH))
+            parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split('.')[-1])))
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
+    
 
+def get_icon_for_extention(ext: str):
+    if not os.path.isdir(f"src/assets/langs/{ext}"):
+        return "src/assets/file.ico"
+    return f"src/assets/langs/{ext}/{ext}.ico"
 
 
 def openFileNameDialog():
