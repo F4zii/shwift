@@ -32,9 +32,9 @@ class Ui_MainWindow(object):
         self.translate = QtCore.QCoreApplication.translate
 
     def open_file(self, filepath=None):
-        if filepath is None:
-            filepath = utils.openFileNameDialog()
         if not filepath:
+            filepath = utils.openFileNameDialog()
+        if not os.path.isfile(filepath):
             return
 
         with open(str(filepath), 'r') as f:
@@ -48,6 +48,9 @@ class Ui_MainWindow(object):
         f = utils.saveFileDialog()
         if not f:
             return
+        with open(str(f), 'w+') as f:
+            curr_tab = self.tabs.currentWidget()
+            f.write(curr_tab.textEdit.toPlainText())
 
     def on_tab_change(self, i):
         if not self.tabs.currentWidget():
