@@ -79,7 +79,7 @@ class Ui_MainWindow(object):
 
         self.treeView = QtWidgets.QTreeWidget(self.centralwidget)
         self.treeView.setHeaderLabel('File System')
-        self.treeView.setGeometry(QtCore.QRect(50, 40, 140, 850))
+        self.treeView.setGeometry(QtCore.QRect(10, 40, 170, 850))
         # self.mainLayout.addWidget(self.treeView)
         # self.mainLayout.addWidget(self.tabs)
         # self.mainLayout.addWidget(self.textEdit)
