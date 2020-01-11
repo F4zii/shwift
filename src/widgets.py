@@ -5,7 +5,6 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import sys
 import os
 
-from utils import DIR_ICON_PATH, FILE_ICON_PATH
 
 
 class Popup(QWidget):
@@ -17,18 +16,27 @@ class Popup(QWidget):
 
 
 class TreeFileWidget(QTreeWidget):
-    def __init__(self, parent = None):
+    def __init__(self, windowUi ,parent = None):
         QTreeWidget.__init__(self, parent)
+        self.parent = parent
+        self.window_ui = windowUi
+        
         self.clicked.connect(self.on_double_clicked)
         self.clicks = 0
 
 
     def on_double_clicked(self, index):
-        if self.clicks >= 2:
-            
-        QtGui.QTreeWidget.mousePressEvent(self, event)
+        if self.clicks >= 1:
+            self.clicks = 0
+            self.window_ui.open_file(self.currentItem().file_path)
+        else:
+            self.clicks += 1
 
 
+class TreeFileWidgetItem(QTreeWidgetItem):
+    def __init__(self, tree, text, file_path: str,):
+        QTreeWidgetItem.__init__(self, tree, text)
+        self.file_path = file_path
 
 
 class TabWidget(QTabWidget):
