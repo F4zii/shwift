@@ -10,12 +10,8 @@ from utils import DIR_ICON_PATH, FILE_ICON_PATH
 
 class Popup(QWidget):
     def __init__(self):
-        super(QTabWidget, self).__init__(self)
-
-    def paintEvent(self, e):
-        dc = QPainter(self)
-        dc.drawLine(0, 0, 100, 100)
-        dc.drawLine(100, 0, 0, 100)
+        QWidget.__init__(self)
+    
 
 
 
