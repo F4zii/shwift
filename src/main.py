@@ -24,19 +24,23 @@ from utils import DIR_ICON_PATH, FILE_ICON_PATH
 
 from tools import Terminal
 
+
+
 class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
         self.translate = QtCore.QCoreApplication.translate
 
-    def open_file(self):
-        filename = utils.openFileNameDialog()
-        if not filename:
+    def open_file(self, filepath=None):
+        if filepath is None:
+            filepath = utils.openFileNameDialog()
+        if not filepath:
             return
-        with open(str(filename), 'r') as f:
+
+        with open(str(filepath), 'r') as f:
             e = Editor()
             e.setText(self.translate("MainWindow", f.read()))
-            tab = self.tabs.create_tab(e, name=os.path.basename(filename))
+            tab = self.tabs.create_tab(e, name=os.path.basename(filepath))
             self.tabs.setCurrentWidget(tab)
             
 
@@ -76,7 +80,7 @@ class Ui_MainWindow(object):
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
 
-        self.treeView = TreeFileWidget(self.centralwidget)
+        self.treeView = TreeFileWidget(self ,self.centralwidget)
         self.treeView.setHeaderLabel('File System')
         self.treeView.setGeometry(QtCore.QRect(10, 40, 170, 850))
         # self.mainLayout.addWidget(self.treeView)
