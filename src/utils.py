@@ -27,7 +27,6 @@ ICONS = {
 
 
 
-
 def load_filesystem_view(startpath, tree):
     """
     Load Project structure tree
