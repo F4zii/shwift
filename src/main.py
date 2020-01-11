@@ -14,8 +14,7 @@ import qdarkstyle
 
 from utils import load_filesystem_view
 
-from widgets import Popup, TabWidget, Editor
-
+from widgets import Popup, TabWidget, Editor, TreeFileWidget
 
 import sys
 import os
@@ -77,7 +76,7 @@ class Ui_MainWindow(object):
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
 
-        self.treeView = QtWidgets.QTreeWidget(self.centralwidget)
+        self.treeView = TreeFileWidget(self.centralwidget)
         self.treeView.setHeaderLabel('File System')
         self.treeView.setGeometry(QtCore.QRect(10, 40, 170, 850))
         # self.mainLayout.addWidget(self.treeView)
