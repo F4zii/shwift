@@ -1,7 +1,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QGridLayout
-from PyQt5.QtCore import QDir, QFile, QTextStream
+from PyQt5.QtCore import QDir, QFile, QTextStream, QRect
 from PyQt5.QtGui import *
 
 import sys
@@ -38,22 +38,25 @@ class Ui_MainWindow(object):
             e = Editor()
             e.setText(self.translate("MainWindow", f.read()))
             tab = self.tabs.create_tab(e, name=os.path.basename(filename))
+            self.tabs.setCurrentWidget(tab)
             
 
     def save_file(self):
         f = utils.saveFileDialog()
         if not f:
-            self.popup = Popup()
-            self.popup.setGeometry(QRect(100, 100, 400, 200))
-            self.popup.show()
+            return
 
     def on_tab_change(self, i):
+        if not self.tabs.currentWidget():
+            self.textEdit.setText("")
+            return  
         self.textEdit.setText(self.tabs.currentWidget().textEdit.toPlainText())  
 
  
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 800)
+        MainWindow.setWindowIcon(QtGui.QIcon('src\assets\file.ico'))
         self.mainLayout = QGridLayout()
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
