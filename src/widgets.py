@@ -6,6 +6,7 @@ import sys
 import os
 
 
+# TODO Update Treeview after item addition
 
 class Popup(QWidget):
     def __init__(self):
