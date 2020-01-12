@@ -24,7 +24,7 @@ from utils import DIR_ICON_PATH, FILE_ICON_PATH
 
 from tools import Terminal
 
-# TODO Update Treeview after item addition
+# TODO Update Treeview after item addition, folders icon update
 
 
 class Ui_MainWindow(object):
