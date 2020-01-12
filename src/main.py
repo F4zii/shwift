@@ -8,6 +8,8 @@ import sys
 
 import qdarkstyle
 
+import breeze_resources
+
 # from pygments.lexers import get_lexer_for_filename
 # from pygments import highlight
 # from pygments.formatters import BBCodeFormatter
@@ -268,7 +270,10 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    file = QFile(":/dark.qss")
+    file.open(QFile.ReadOnly | QFile.Text)
+    stream = QTextStream(file)
+    app.setStyleSheet(stream.readAll())
     # MainWindow.setContentsMargins(10, 10, 10, 10)
     MainWindow.show()
     sys.exit(app.exec_())
