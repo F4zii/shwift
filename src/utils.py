@@ -50,7 +50,7 @@ def load_filesystem_view(startpath, tree):
 
         else:
             parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split('.')[-1])))
-            parent_itm.item_type = "file""
+            parent_itm.item_type = "file"
 
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
     
