@@ -8,6 +8,8 @@ import sys
 
 import qdarkstyle
 
+import breeze_resources
+
 # from pygments.lexers import get_lexer_for_filename
 # from pygments import highlight
 # from pygments.formatters import BBCodeFormatter
@@ -20,10 +22,11 @@ import sys
 import os
 
 import utils
-from utils import DIR_ICON_PATH, FILE_ICON_PATH
+from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
 
 from tools import Terminal
 
+# TODO Update Treeview after item addition, folders icon update
 
 
 class Ui_MainWindow(object):
@@ -256,30 +259,6 @@ class Ui_MainWindow(object):
             # set model for toollist
             self.toollist.setModel(self.source_model)
 
-        def initDirectory(self, path):
-            new_item = newItem(path)
-            self.readDirectory(path, new_item)
-            self.source_model.appendRow(new_item)
-
-        def readDirectory(self, path, parent_item):
-            directory = os.listdir(path)
-            for file_name in directory:
-                file_path = path + '/' + file_name
-                new_item = newItem(file_path)
-                parent_item.appendRow(new_item)
-                if os.path.isdir(file_path):
-                    self.readDirectory(file_path, new_item)
-
-        def newItem(self, path):
-            title = os.path.basename(path)
-            item = QtGui.QStandardItem()
-            icon_path = FILE_ICON_PATH
-            if os.path.isdir(file_path):
-                icon_path = DIR_ICON_PATH
-            icon = QtGui.QIcon(icon_path)
-            item.setText(title)
-            item.setIcon(icon)
-            return item
             
         # utils.openFileNameDialog()
         # utils.openFileNamesDialog()
@@ -291,7 +270,10 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    file = QFile(":/dark.qss")
+    file.open(QFile.ReadOnly | QFile.Text)
+    stream = QTextStream(file)
+    app.setStyleSheet(stream.readAll())
     # MainWindow.setContentsMargins(10, 10, 10, 10)
     MainWindow.show()
     sys.exit(app.exec_())

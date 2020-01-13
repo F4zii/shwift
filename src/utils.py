@@ -7,7 +7,8 @@ import glob, os
 # from widgets import TreeFileWidgetItem
 
 
-DIR_ICON_PATH = "src/assets/folder_closed.ico"
+DIR_CLOSED_ICON_PATH = "src/assets/folder_closed.ico"
+DIR_OPENED_ICON_PATH = "src/assets/folder_opened.ico"
 FILE_ICON_PATH = "src/assets/file.ico"
 
 def create_label(window, name: str):
@@ -43,11 +44,14 @@ def load_filesystem_view(startpath, tree):
         parent_itm.file_path = path_info
         if os.path.isdir(path_info):
             load_filesystem_view(path_info, parent_itm)
-            parent_itm.setIcon(0, QIcon(DIR_ICON_PATH))
+            parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
+            parent_itm.item_type = "dir"
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
 
         else:
             parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split('.')[-1])))
+            parent_itm.item_type = "file"
+
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
     
 
@@ -87,27 +91,27 @@ def get_file_name(curr_file):
     return os.path.join(here, str(curr_file))
 
     
-def initDirectory(self, path):
-    new_item = newItem(path)
-    self.readDirectory(path, new_item)
-    self.source_model.appendRow(new_item)
+# def initDirectory(self, path):
+#     new_item = newItem(path)
+#     self.readDirectory(path, new_item)
+#     self.source_model.appendRow(new_item)
 
-def readDirectory(self, path, parent_item):
-    directory = os.listdir(path)
-    for file_name in directory:
-        file_path = path + '/' + file_name
-        new_item = newItem(file_path)
-        parent_item.appendRow(new_item)
-        if os.path.isdir(file_path):
-            self.readDirectory(file_path, new_item)
+# def readDirectory(self, path, parent_item):
+#     directory = os.listdir(path)
+#     for file_name in directory:
+#         file_path = path + '/' + file_name
+#         new_item = newItem(file_path)
+#         parent_item.appendRow(new_item)
+#         if os.path.isdir(file_path):
+#             self.readDirectory(file_path, new_item)
 
-def newItem(self, path):
-    title = os.path.basename(path)
-    item = QtGui.QStandardItem()
-    icon_path = FILE_ICON_PATH
-    if os.path.isdir(file_path):
-        icon_path = DIR_ICON_PATH
-    icon = QtGui.QIcon(icon_path)
-    item.setText(title)
-    item.setIcon(icon)
-    return item
+# def newItem(self, path):
+#     title = os.path.basename(path)
+#     item = QtGui.QStandardItem()
+#     icon_path = FILE_ICON_PATH
+#     if os.path.isdir(file_path):
+#         icon_path = DIR_ICON_PATH
+#     icon = QtGui.QIcon(icon_path)
+#     item.setText(title)
+#     item.setIcon(icon)
+#     return item
