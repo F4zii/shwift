@@ -6,8 +6,6 @@ from PyQt5.QtGui import *
 
 import sys
 
-import qdarkstyle
-
 import breeze_resources
 
 # from pygments.lexers import get_lexer_for_filename
@@ -22,6 +20,7 @@ import sys
 import os
 
 import utils
+
 from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
 
 from tools import Terminal
@@ -33,6 +32,7 @@ class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
         self.translate = QtCore.QCoreApplication.translate
+        self.new_file_count = 0
 
     def open_file(self, filepath=None):
         if not filepath:
@@ -48,12 +48,18 @@ class Ui_MainWindow(object):
             
 
     def save_file(self):
+        curr_tab = self.tabs.currentWidget()
+        if not hasattr(curr_tab, "textEdit"):
+            curr_tab = self.create_new_file()
         f = utils.saveFileDialog()
         if not f:
             return
-        with open(str(f), 'w+') as f:
-            curr_tab = self.tabs.currentWidget()
-            f.write(curr_tab.textEdit.toPlainText())
+        with open(str(f), 'w') as save_file:
+            save_file.write(curr_tab.textEdit.toPlainText())
+
+
+    def create_new_file(self):
+        return self.tabs.create_tab(Editor(), f'Untitled-{self.new_file_count}')
 
     def on_tab_change(self, i):
         if not self.tabs.currentWidget():
@@ -204,6 +210,7 @@ class Ui_MainWindow(object):
         self.actionNew.setText(self.translate("MainWindow", "New"))
         self.actionNew.setStatusTip(self.translate("MainWindow", "Create a new file"))
         self.actionNew.setShortcut(self.translate("MainWindow", "Ctrl+N"))
+        self.actionNew.triggered.connect(self.create_new_file())
         self.actionOpen.setText(self.translate("MainWindow", "Open"))
         self.actionOpen.setStatusTip(self.translate("MainWindow", "Open a file from your system"))
         self.actionOpen.setShortcut(self.translate("MainWindow", "Ctrl+O"))
@@ -270,9 +277,9 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    file = QFile(":/dark.qss")
-    file.open(QFile.ReadOnly | QFile.Text)
-    stream = QTextStream(file)
+    theme_file = QFile(":/light.qss")
+    theme_file.open(QFile.ReadOnly | QFile.Text)
+    stream = QTextStream(theme_file)
     app.setStyleSheet(stream.readAll())
     # MainWindow.setContentsMargins(10, 10, 10, 10)
     MainWindow.show()
