@@ -22,39 +22,39 @@ class TreeFileWidget(QTreeWidget):
         QTreeWidget.__init__(self, parent)
         self.parent = parent
         self.window_ui = windowUi
-        self.itemClicked.connect(self.on_clicked)   
+        self.itemExpanded.connect(self.on_item_expanded)
+        self.itemCollapsed.connect(self.on_item_expanded)
+        self.itemClicked.connect(self.on_item_clicked)
         self.clicks = 0
 
-
-    @pyqtSlot(QTreeWidgetItem, int)
-    def on_clicked(self, it, col):
+    def on_item_clicked(self, it, col):
         # if the folder was changed, no need to update file also 
         # since the type was "dir"
-        if self.toggle_folder_icon(it):
-            return
-        # checkin for clicks on files
-        if self.clicks >= 1:
-            self.clicks = 0
+
+        if it.item_type == "file":
             self.window_ui.open_file(self.currentItem().file_path)
+
         else:
-            self.clicks += 1
+            self.toggle_folder_icon(it)
+
+
+    def on_item_expanded(self, it):
+        if it.item_type == "dir":
+            self.toggle_folder_icon(it)
+            
+            
 
     def toggle_folder_icon(self, item):
         # loop = QEventLoop()
         # QTimer.singleShot(10, loop.quit)
         # loop.exec_()
-        if item.item_type == "dir":
-            expanded = item.isExpanded()
-            if expanded:
-                item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
-                item.setExpanded(not expanded)
+        expanded = item.isExpanded()
+        if expanded:
+            item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
+        else:
+            item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
 
-            else:
-                item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
-                item.setExpanded(not expanded)
-
-            return True
-        return False
+          
 
 
 
@@ -72,6 +72,8 @@ class TabWidget(QTabWidget):
         # self.textEdit = QTextEdit(self.parent)
         # self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
         self.translate = QCoreApplication.translate
+        self.new_file_count = 0
+
 
         
     def create_tab(self,  textEdit, name: str = "tab", closable: bool = True):
@@ -81,6 +83,9 @@ class TabWidget(QTabWidget):
         self.addTab(tab, "")
         self.setTabText(self.indexOf(tab), self.translate("MainWindow", name))
 
+    def create_untitled_tab(self):
+        self.new_file_count += 1
+        return self.create_tab(Editor(), f'Untitled-{self.new_file_count-1}')
 
     def remove_tab(self, index):
         widget = self.widget(index)
