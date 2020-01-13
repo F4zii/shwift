@@ -4,6 +4,8 @@ from PyQt5.QtGui import QIcon
 
 import glob, os
 
+from os import walk
+
 # from widgets import TreeFileWidgetItem
 
 
@@ -111,27 +113,21 @@ def toggle_stylesheet(path):
     stream = QTextStream(file)
     app.setStyleSheet(stream.readAll())
     
-# def initDirectory(self, path):
-#     new_item = newItem(path)
-#     self.readDirectory(path, new_item)
-#     self.source_model.appendRow(new_item)
 
-# def readDirectory(self, path, parent_item):
-#     directory = os.listdir(path)
-#     for file_name in directory:
-#         file_path = path + '/' + file_name
-#         new_item = newItem(file_path)
-#         parent_item.appendRow(new_item)
-#         if os.path.isdir(file_path):
-#             self.readDirectory(file_path, new_item)
+def find_tab_by_filepath(treeWidget , filepath: str):
+    pass
 
-# def newItem(self, path):
-#     title = os.path.basename(path)
-#     item = QtGui.QStandardItem()
-#     icon_path = FILE_ICON_PATH
-#     if os.path.isdir(file_path):
-#         icon_path = DIR_ICON_PATH
-#     icon = QtGui.QIcon(icon_path)
-#     item.setText(title)
-#     item.setIcon(icon)
-#     return item
+
+
+def is_file_in(filepath: str, directory: str = 'src'):
+    f = []
+    for (dirpath, dirnames, filenames) in walk(directory):
+        f.extend(filenames)
+    return filepath in f
+
+
+def get_relative_path(dirname: str, filepath: str):
+    return os.path.join(dirname, filepath)
+        
+
+
