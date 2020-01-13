@@ -87,7 +87,6 @@ class Tab(QWidget):
 
 
 class Editor(QTextEdit):
-
     def __init__(self, parent=None):
         super(Editor, self).__init__(parent)
         self.setGeometry(QRect(180, 40, 1650, 850)) 
