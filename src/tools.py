@@ -1,35 +1,26 @@
-import os
-import sys 
 from PyQt5.QtCore import * 
 # from PyQt5.QtGui import * 
 from PyQt5.QtWidgets import *
 
 import subprocess
 
-
-class Terminal(QWidget):
-    def __init__(self, parent=None, os: str = "windows"):
-        QWidget.__init__(self) 
-        self.parent = parent   
-        self.os = os
+import os
 
 
+import sys
+from PyQt5 import QtCore, QtWidgets
 
-    def setup_command_box(self):
-        self.label = QLabel(self.tr("Enter command and press Return"))
-        self.le = QLineEdit()
-        self.te = QTextEdit()
 
-        # layout
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.label)
-        layout.addWidget(self.le)
-        layout.addWidget(self.te)
-        self.setLayout(layout)
+class EmbTerminal(QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        super(EmbTerminal, self).__init__(parent)
+        self.process = QtCore.QProcess(self)
 
-        self.connect(self.le, SIGNAL("returnPressed(void)"), self.run_command)
+        self.terminal = QtWidgets.QWidget(self)
 
-    def run_command(self):
-        cmd = str(self.le.text())
-        stdouterr = os.popen4(cmd)[1].read()
-        self.te.setText(stdouterr)
+        layout = QtWidgets.QVBoxLayout(self)
+
+        layout.addWidget(self.terminal)
+
+        self.process.start('urxvt',['-embed', str(int(self.winId()))])
+        self.setFixedSize(640, 480)
