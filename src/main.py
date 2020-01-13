@@ -25,7 +25,8 @@ from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
 
 from tools import Terminal
 
-# TODO Update Treeview after item addition, folders icon update
+# TODO Update Treeview after item addition, seperaate funcs
+# beginInsertRows() and endInsertRows()
 
 
 class Ui_MainWindow(object):

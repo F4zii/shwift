@@ -4,6 +4,8 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
 
 import sys
 import os
+ 
+import time
 
 from utils import DIR_OPENED_ICON_PATH, DIR_CLOSED_ICON_PATH,  FILE_ICON_PATH
 
@@ -38,11 +40,19 @@ class TreeFileWidget(QTreeWidget):
             self.clicks += 1
 
     def toggle_folder_icon(self, item):
+        # loop = QEventLoop()
+        # QTimer.singleShot(10, loop.quit)
+        # loop.exec_()
         if item.item_type == "dir":
-            if item.isExpanded():
-                item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
-            else:
+            expanded = item.isExpanded()
+            if expanded:
                 item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
+                item.setExpanded(not expanded)
+
+            else:
+                item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
+                item.setExpanded(not expanded)
+
             return True
         return False
 
