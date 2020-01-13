@@ -11,7 +11,7 @@ class TreeFileWidget(QTreeWidget):
     def __init__(self, windowUi ,parent = None):
         QTreeWidget.__init__(self, parent)
         self.parent = parent
-        self.window_ui = windowUi
+        self.window = windowUi
         self.itemExpanded.connect(self.on_item_expanded)
         self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
@@ -19,8 +19,8 @@ class TreeFileWidget(QTreeWidget):
         self.clicks = 0
 
     def on_item_entered(it, col):
-        print(it, col)
-
+        pass    
+    
     def on_item_clicked(self, it, col):
         """
         An event handler being called by QTreeWidget.itemClicked
@@ -34,7 +34,7 @@ class TreeFileWidget(QTreeWidget):
         """
         
         if it.item_type == "file":
-            self.window_ui.open_file(self.currentItem().file_path)
+            self.window.open_file(self.currentItem().file_path)
 
         else:
             self.toggle_folder_icon(it)
