@@ -1,10 +1,7 @@
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QGridLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
 from PyQt5.QtCore import QDir, QFile, QTextStream, QRect
 from PyQt5.QtGui import *
-
-import sys
 
 import breeze_resources
 
@@ -14,16 +11,22 @@ import breeze_resources
 
 from utils import load_filesystem_view, toggle_stylesheet
 
-from widgets import Popup, TabWidget, Editor, TreeFileWidget
+from widgets.tree import TreeFileWidget
+from widgets.tab import TabWidget
+from widgets.ui_widgets import Editor
 
 import sys
+
+#sys.path.insert(0, 'src\widgets')
+
 import os
 
 import utils
 
 from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
 
-from tools import Terminal
+from tools import EmbTerminal
+
 
 # TODO Update Treeview after item addition, seperaate funcs
 # beginInsertRows() and endInsertRows()
@@ -34,16 +37,21 @@ class Ui_MainWindow(object):
         super().__init__()
         self.translate = QtCore.QCoreApplication.translate
 
+
     def open_file(self, filepath=None):
         if not filepath:
             filepath = utils.openFileNameDialog()
         if not os.path.isfile(filepath):
             return
 
-        with open(str(filepath), 'r') as f:
+        with open(str(filepath), 'r', encoding="utf8") as f:
             e = Editor()
+            # try:
             e.setText(self.translate("MainWindow", f.read()))
-            tab = self.tabs.create_tab(e, name=os.path.basename(filepath))
+            # except UnicodeDecodeError:
+            #     pass
+            #filepath = os.path.join(os.path.dirname(__file__), filepath)
+            tab = self.tabs.create_tab(e, filepath=filepath)
             self.tabs.setCurrentWidget(tab)
             
 
@@ -60,52 +68,35 @@ class Ui_MainWindow(object):
 
     
 
-    def on_tab_change(self, i):
-        curr_tab = self.tabs.currentWidget()
-        if not curr_tab:
-            self.textEdit.setText("")
-            return
-        if not hasattr(curr_tab, "textEdit"):
-            curr_tab = self.tabs.create_untitled_tab()  
-        self.textEdit.setText(curr_tab.textEdit.toPlainText())  
+    
 
 
  
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 800)
-        MainWindow.setWindowIcon(QtGui.QIcon('src\assets\file.ico'))
-        self.mainLayout = QGridLayout()
-        self.mainLayout.setContentsMargins(0,0,0,0)
+        MainWindow.setWindowIcon(QtGui.QIcon('src/assets/file.ico'))
+        self.mainLayout = QVBoxLayout()
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(190, 40, 1650, 850))
+        self.textEdit.setGeometry(QtCore.QRect(190, 50, 1650, 830))
         self.font = QtGui.QFont()
         self.font.setFamily("Consolas")
         self.font.setPointSize(16)
         self.textEdit.setFont(self.font)
-        self.tabs = TabWidget(self.centralwidget)
+        self.tabs = TabWidget(self, self.centralwidget)
         self.tabs.setGeometry(QtCore.QRect(190, 15, 1650, 100))
-        self.tabs.tabCloseRequested.connect(self.tabs.remove_tab)
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
-        self.tabs.currentChanged.connect(self.on_tab_change)
-        self.tabs.create_untitled_tab()
+        self.tabs.create_untitled_tab() 
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
 
         self.treeView = TreeFileWidget(self ,self.centralwidget)
         self.treeView.setHeaderLabel('File System')
-        self.treeView.setGeometry(QtCore.QRect(10, 40, 170, 850))
-        # self.mainLayout.addWidget(self.treeView)
-        # self.mainLayout.addWidget(self.tabs)
-        # self.mainLayout.addWidget(self.textEdit)
-        # self.terminal = Terminal()
-        # self.terminal = Terminal(self.centralwidget)
-        # self.terminal.setup_command_box()
-        # utils.find_or_create_item(self, os.path.dirname(os.path.abspath(__file__)), self.centralwidget)
+        self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 850))
         load_filesystem_view(os.path.dirname(os.path.realpath(__file__)), self.treeView)
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -264,10 +255,13 @@ class Ui_MainWindow(object):
             # signals
 
             # main layout
-            mainLayout = QtGui.QGridLayout()
-            mainLayout.setContentsMargins(0,0,0,0)
-            mainLayout.addWidget(self.toollist)
-            self.setLayout(mainLayout)
+            self.mainLayout.setContentsMargins(0,0,0,0)
+            self.mainLayout.addWidget(self.toollist)
+            self.mainLayout.addWidget(self.tabs)
+            self.mainLayout.addWidget(self.treeView)
+            self.mainLayout.addWidget(self.textEdit)
+            MainWindow.setLayout(self.mainLayout)  
+            self.setLayout(self.mainLayout)
             # set model for toollist
             self.toollist.setModel(self.source_model)
 
