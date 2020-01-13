@@ -39,6 +39,7 @@ class Ui_MainWindow(object):
 
 
     def open_file(self, filepath=None):
+        print("open")
         if not filepath:
             filepath = utils.openFileNameDialog()
         if not os.path.isfile(filepath):
@@ -52,7 +53,9 @@ class Ui_MainWindow(object):
             #     pass
             #filepath = os.path.join(os.path.dirname(__file__), filepath)
             tab = self.tabs.create_tab(e, filepath=filepath)
-            self.tabs.setCurrentWidget(tab)
+            print("E: ", e.toPlainText())
+            print("Current ", self.tabs.currentWidget().textEdit.toPlainText())
+            print("End")
             
 
     def save_file(self):
