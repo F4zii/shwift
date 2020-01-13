@@ -33,7 +33,6 @@ class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
         self.translate = QtCore.QCoreApplication.translate
-        self.new_file_count = 0
 
     def open_file(self, filepath=None):
         if not filepath:
@@ -51,7 +50,7 @@ class Ui_MainWindow(object):
     def save_file(self):
         curr_tab = self.tabs.currentWidget()
         if not hasattr(curr_tab, "textEdit"):
-            curr_tab = self.create_untitled_tab()
+            curr_tab = self.tabs.create_untitled_tab()
         f = utils.saveFileDialog()
         if not f:
             return
@@ -59,9 +58,7 @@ class Ui_MainWindow(object):
             save_file.write(curr_tab.textEdit.toPlainText())
 
 
-    def create_untitled_tab(self):
-        self.new_file_count += 1
-        return self.tabs.create_tab(Editor(), f'Untitled-{self.new_file_count-1}')
+    
 
     def on_tab_change(self, i):
         curr_tab = self.tabs.currentWidget()
@@ -69,7 +66,7 @@ class Ui_MainWindow(object):
             self.textEdit.setText("")
             return
         if not hasattr(curr_tab, "textEdit"):
-            curr_tab = self.create_untitled_tab()  
+            curr_tab = self.tabs.create_untitled_tab()  
         self.textEdit.setText(curr_tab.textEdit.toPlainText())  
 
 
@@ -95,6 +92,7 @@ class Ui_MainWindow(object):
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
         self.tabs.currentChanged.connect(self.on_tab_change)
+        self.tabs.create_untitled_tab()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
 
@@ -217,7 +215,7 @@ class Ui_MainWindow(object):
         self.actionNew.setText(self.translate("MainWindow", "New"))
         self.actionNew.setStatusTip(self.translate("MainWindow", "Create a new file"))
         self.actionNew.setShortcut(self.translate("MainWindow", "Ctrl+N"))
-        self.actionNew.triggered.connect(self.create_untitled_tab)
+        self.actionNew.triggered.connect(self.tabs.create_untitled_tab)
         self.actionOpen.setText(self.translate("MainWindow", "Open"))
         self.actionOpen.setStatusTip(self.translate("MainWindow", "Open a file from your system"))
         self.actionOpen.setShortcut(self.translate("MainWindow", "Ctrl+O"))
