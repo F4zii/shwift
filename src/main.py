@@ -12,7 +12,7 @@ import breeze_resources
 # from pygments import highlight
 # from pygments.formatters import BBCodeFormatter
 
-from utils import load_filesystem_view
+from utils import load_filesystem_view, toggle_stylesheet
 
 from widgets import Popup, TabWidget, Editor, TreeFileWidget
 
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
     def save_file(self):
         curr_tab = self.tabs.currentWidget()
         if not hasattr(curr_tab, "textEdit"):
-            curr_tab = self.create_new_file()
+            curr_tab = self.create_untitled_tab()
         f = utils.saveFileDialog()
         if not f:
             return
@@ -58,14 +58,19 @@ class Ui_MainWindow(object):
             save_file.write(curr_tab.textEdit.toPlainText())
 
 
-    def create_new_file(self):
-        return self.tabs.create_tab(Editor(), f'Untitled-{self.new_file_count}')
+    def create_untitled_tab(self):
+        self.new_file_count += 1
+        return self.tabs.create_tab(Editor(), f'Untitled-{self.new_file_count-1}')
 
     def on_tab_change(self, i):
-        if not self.tabs.currentWidget():
+        curr_tab = self.tabs.currentWidget()
+        if not curr_tab:
             self.textEdit.setText("")
-            return  
-        self.textEdit.setText(self.tabs.currentWidget().textEdit.toPlainText())  
+            return
+        if not hasattr(curr_tab, "textEdit"):
+            curr_tab = self.create_untitled_tab()  
+        self.textEdit.setText(curr_tab.textEdit.toPlainText())  
+
 
  
     def setupUi(self, MainWindow):
@@ -78,12 +83,12 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(190, 40, 1650, 850))
-        font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(16)
-        self.textEdit.setFont(font)
+        self.font = QtGui.QFont()
+        self.font.setFamily("Consolas")
+        self.font.setPointSize(16)
+        self.textEdit.setFont(self.font)
         self.tabs = TabWidget(self.centralwidget)
-        self.tabs.setGeometry(QtCore.QRect(190, 15, 280, 100))
+        self.tabs.setGeometry(QtCore.QRect(190, 15, 1650, 100))
         self.tabs.tabCloseRequested.connect(self.tabs.remove_tab)
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
@@ -199,6 +204,7 @@ class Ui_MainWindow(object):
         self.tabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(self.translate("MainWindow", "Shwift"))
         # self.tabs.setTabText(self.tabs.indexOf(self.tab), self.translate("MainWindow", "Tab 1"))
@@ -210,7 +216,7 @@ class Ui_MainWindow(object):
         self.actionNew.setText(self.translate("MainWindow", "New"))
         self.actionNew.setStatusTip(self.translate("MainWindow", "Create a new file"))
         self.actionNew.setShortcut(self.translate("MainWindow", "Ctrl+N"))
-        self.actionNew.triggered.connect(self.create_new_file())
+        self.actionNew.triggered.connect(self.create_untitled_tab)
         self.actionOpen.setText(self.translate("MainWindow", "Open"))
         self.actionOpen.setStatusTip(self.translate("MainWindow", "Open a file from your system"))
         self.actionOpen.setShortcut(self.translate("MainWindow", "Ctrl+O"))
@@ -277,7 +283,7 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    theme_file = QFile(":/light.qss")
+    theme_file = QFile(":/dark.qss")
     theme_file.open(QFile.ReadOnly | QFile.Text)
     stream = QTextStream(theme_file)
     app.setStyleSheet(stream.readAll())
