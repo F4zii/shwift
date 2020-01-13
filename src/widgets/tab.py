@@ -26,10 +26,11 @@ class TabWidget(QTabWidget):
         
     def create_tab(self,  textEdit, filepath: str, closable: bool = True):
         tab = Tab(textEdit=textEdit, filepath=filepath, parent=self)
-        tab.setObjectName(filepath)
+        tab.setObjectName(tab.file_name)
         # tab.padding
         self.addTab(tab, "")
         self.setTabText(self.indexOf(tab), self.translate("MainWindow", tab.file_name))
+        self.setCurrentWidget(tab)
 
 
     def create_untitled_tab(self):
@@ -41,23 +42,29 @@ class TabWidget(QTabWidget):
         widget = self.widget(index)
         if widget is not None:
             widget.deleteLater()
-        self.removeTab(index)
-        widget.textEdit.deleteLater()
-        widget.textEdit = None
-        widget = None
+            self.removeTab(index)
+            widget.textEdit.deleteLater()
+            widget.textEdit = None
+            widget = None
 
 
-    def on_tab_change(self, i):
+    def on_tab_change(self, i): 
+        print("tab change")
         curr_tab = self.currentWidget()
         if not curr_tab:
+            print("Not Current " , self.currentIndex())
             self.window.mainLayout.removeWidget(self.window.textEdit)  
             self.window.textEdit.deleteLater()
             self.window.textEdit = None
             return
-
+        print("Current " , self.currentIndex())
         if not hasattr(curr_tab, "textEdit"):
-            curr_tab = self.create_untitled_tab()  
-        self.window.textEdit.setText(curr_tab.textEdit.toPlainText())  
+            curr_tab = self.create_untitled_tab()
+        # if not self.window.textEdit:
+        #     self.window.textEdit = Editor(self.parent)
+        if self.window.textEdit:
+            self.window.textEdit.setText(curr_tab.textEdit.toPlainText())
+              
 
 
 class Tab(QWidget):
@@ -74,9 +81,7 @@ class Tab(QWidget):
             self.file_name = f'Untitled-{self.parent.new_file_count-1}'
             return
         basename = os.path.basename(self.filepath)
-        print(basename)
         if is_file_in(filepath=basename):
-            print("In!" + basename)
             self.file_name = basename
         else:
             self.file_name = get_relative_path(os.path.dirname(__file__), self.filepath)
