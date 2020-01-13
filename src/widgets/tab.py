@@ -42,7 +42,6 @@ class TabWidget(QTabWidget):
         if widget is not None:
             widget.deleteLater()
         self.removeTab(index)
-        self.window.mainLayout.removeWidget(widget.textEdit)
         widget.textEdit.deleteLater()
         widget.textEdit = None
         widget = None
@@ -51,8 +50,11 @@ class TabWidget(QTabWidget):
     def on_tab_change(self, i):
         curr_tab = self.currentWidget()
         if not curr_tab:
-            self.window.textEdit.setText("")
+            self.window.mainLayout.removeWidget(self.window.textEdit)  
+            self.window.textEdit.deleteLater()
+            self.window.textEdit = None
             return
+
         if not hasattr(curr_tab, "textEdit"):
             curr_tab = self.create_untitled_tab()  
         self.window.textEdit.setText(curr_tab.textEdit.toPlainText())  
