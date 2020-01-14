@@ -15,11 +15,12 @@ class TabWidget(QTabWidget):
         self.parent = parent
         # self.textEdit = QTextEdit(self.parent)
         # self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
-        self.translate = QCoreApplication.translate
+        self._translate = QCoreApplication.translate
         self.new_file_count = 0
-        self.currentChanged.connect(self.on_tab_change)
+        self.currentChanged.connect(self._on_tab_change)
         self.tabCloseRequested.connect(self.remove_tab)
         self.last_widget = None
+        self.window.textEdit.textChanged.connect( self.save_current_text )
 
 
         
@@ -28,7 +29,7 @@ class TabWidget(QTabWidget):
         tab.setObjectName(tab.file_name)
         # tab.padding
         self.addTab(tab, "")
-        self.setTabText(self.indexOf(tab), self.translate("MainWindow", tab.file_name))
+        self.setTabText(self.indexOf(tab), self._translate("MainWindow", tab.file_name))
         self.setCurrentWidget(tab)
         return tab
 
@@ -46,7 +47,7 @@ class TabWidget(QTabWidget):
             widget = None
 
 
-    def on_tab_change(self, i): 
+    def _on_tab_change(self, i): 
         curr_tab = self.currentWidget()
         self.save_current_text()
         self.last_widget = curr_tab     
