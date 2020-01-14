@@ -51,6 +51,8 @@ class Ui_MainWindow(object):
             e.setText(self.translate("MainWindow", f.read()))
             if not self.textEdit:
                 self.textEdit = e
+                self.mainLayout.addWidget(self.textEdit)
+            print(self.mainLayout.findChild(QWidget, "textEdit"))
             # except UnicodeDecodeError:
             #     pass
             #filepath = os.path.join(os.path.dirname(__file__), filepath)
@@ -262,7 +264,8 @@ class Ui_MainWindow(object):
             self.mainLayout.addWidget(self.toollist)
             self.mainLayout.addWidget(self.tabs)
             self.mainLayout.addWidget(self.treeView)
-            self.mainLayout.addWidget(self.textEdit)
+            # checking, maybe will change that to happen when opening
+            self.mainLayout.addChildWidget(self.textEdit)
             MainWindow.setLayout(self.mainLayout)  
             self.setLayout(self.mainLayout)
             # set model for toollist
