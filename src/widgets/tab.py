@@ -51,14 +51,15 @@ class TabWidget(QTabWidget):
     def on_tab_change(self, i): 
         print("tab change")
         curr_tab = self.currentWidget()
-        if not curr_tab:
-            print("Not Current " , self.currentIndex())
-            self.window.mainLayout.removeWidget(self.window.textEdit)  
-            self.window.textEdit.deleteLater()
-            self.window.textEdit = None
+        if curr_tab is None:
+            print("No Current")
+            if self.window.textEdit:
+                self.window.mainLayout.removeWidget(self.window.textEdit)  
+                self.window.textEdit.deleteLater()
+                self.window.textEdit = None
             return
         print("Current " , self.currentIndex())
-        if not hasattr(curr_tab, "textEdit"):
+        if curr_tab.textEdit is None:
             curr_tab = self.create_untitled_tab()
         # if not self.window.textEdit:
         #     self.window.textEdit = Editor(self.parent)
