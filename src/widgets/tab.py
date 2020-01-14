@@ -8,8 +8,6 @@ import os
 
 from utils import is_file_in, get_relative_path
 
-Editor = ui_widgets.Editor
-
 class TabWidget(QTabWidget):
     def __init__(self, window, parent=None):
         super(QTabWidget, self).__init__(parent)
@@ -21,11 +19,12 @@ class TabWidget(QTabWidget):
         self.new_file_count = 0
         self.currentChanged.connect(self.on_tab_change)
         self.tabCloseRequested.connect(self.remove_tab)
+        self.last_widget = None
 
 
         
-    def create_tab(self,  textEdit, filepath: str, closable: bool = True):
-        tab = Tab(textEdit=textEdit, filepath=filepath, parent=self)
+    def create_tab(self,  text, filepath: str, closable: bool = True):
+        tab = Tab(text=text, filepath=filepath, parent=self)
         tab.setObjectName(tab.file_name)
         # tab.padding
         self.addTab(tab, "")
@@ -36,7 +35,7 @@ class TabWidget(QTabWidget):
 
     def create_untitled_tab(self):
         self.new_file_count += 1
-        return self.create_tab(Editor(), f'Untitled-{self.new_file_count-1}')
+        return self.create_tab("", f'Untitled-{self.new_file_count-1}')
 
 
     def remove_tab(self, index):
@@ -44,33 +43,45 @@ class TabWidget(QTabWidget):
         if widget is not None:
             widget.deleteLater()
             self.removeTab(index)
-            widget.textEdit.deleteLater()
-            widget.textEdit = None
             widget = None
 
 
     def on_tab_change(self, i): 
-        print("tab change")
         curr_tab = self.currentWidget()
+        self.save_current_text()
+        self.last_widget = curr_tab     
         if curr_tab is None:
             # self.window.mainLayout.removeWidget(self.window.textEdit)  
-            self.window.textEdit.deleteLater()
-            self.window.textEdit = None
+            self.window.text = ""
             return
         
-        print("Current " , self.currentIndex())
-        if curr_tab.textEdit is None:
+        if curr_tab is None:
             curr_tab = self.create_untitled_tab()
 
         if self.window.textEdit:
-            self.window.textEdit.setText(curr_tab.textEdit.toPlainText())
+            self.window.textEdit.setText(curr_tab.text)
        
+    def save_current_text(self):
+        widget = self.get_last_widget()
+        if not widget:
+            return
+        content = self.window.textEdit.toPlainText()
+        if content:
+            widget.text = content
+
+    def get_last_widget(self):
+        widget = self.last_widget 
+        if not widget:
+            widget = self.currentWidget()
+        return widget
+
+
 
 class Tab(QWidget):
-    def __init__(self, textEdit, filepath: str, parent=None):
+    def __init__(self, text, filepath: str, parent=None):
         super(QWidget, self).__init__(parent)
         self.parent = parent 
-        self.textEdit = textEdit
+        self.text = text
         self.filepath = filepath
         self.file_name = ""
         self.external_init()
