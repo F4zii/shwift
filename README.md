@@ -1,2 +1,3 @@
 # Shwift-Text-Editor
- A text editor programmed in python
+ 
+ A Text editor programmed in python with PyQT5
