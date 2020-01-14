@@ -59,18 +59,13 @@ class Ui_MainWindow(object):
 
     def save_file(self):
         curr_tab = self.tabs.currentWidget()
-        if curr_tab.text == "":
+        if not curr_tab:
             curr_tab = self.tabs.create_untitled_tab()
         f = utils.saveFileDialog()
         if not f:
             return
         with open(str(f), 'w') as save_file:
             save_file.write(curr_tab.text)
-
-
-    
-
-    
 
 
  
