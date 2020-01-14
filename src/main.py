@@ -46,7 +46,7 @@ class Ui_MainWindow(object):
             return
 
         with open(str(filepath), 'r', encoding="utf8") as f:
-            e = Editor()
+            e = Editor(self.centralwidget)
             # try:
             e.setText(self.translate("MainWindow", f.read()))
             # except UnicodeDecodeError:
