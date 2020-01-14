@@ -108,8 +108,12 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Tab 1")
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Tab 2")
+        )
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuPreferences.setTitle(_translate("MainWindow", "Preferences"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
@@ -118,13 +122,22 @@ class Ui_MainWindow(object):
         self.actionNew.setStatusTip(_translate("MainWindow", "Create a new file"))
         self.actionNew.setShortcut(_translate("MainWindow", "Ctrl+N"))
         self.actionOpen.setText(_translate("MainWindow", "Open"))
-        self.actionOpen.setStatusTip(_translate("MainWindow", "Open a file from your system"))
+        self.actionOpen.setStatusTip(
+            _translate("MainWindow", "Open a file from your system")
+        )
         self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
-        self.actionSave.setStatusTip(_translate("MainWindow", "Save the current working file"))
+        self.actionSave.setStatusTip(
+            _translate("MainWindow", "Save the current working file")
+        )
         self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.actionSave_As.setText(_translate("MainWindow", "Save-As"))
-        self.actionSave_As.setStatusTip(_translate("MainWindow", "Save the current working file as a new file in your system"))
+        self.actionSave_As.setStatusTip(
+            _translate(
+                "MainWindow",
+                "Save the current working file as a new file in your system",
+            )
+        )
         self.actionSave_As.setShortcut(_translate("MainWindow", "Ctrl+Shift+S"))
         self.actionUndo.setText(_translate("MainWindow", "Undo"))
         self.actionUndo.setStatusTip(_translate("MainWindow", "Undo previous actions"))
@@ -143,14 +156,21 @@ class Ui_MainWindow(object):
         self.actionReplace.setText(_translate("MainWindow", "Replace"))
         self.actionReplace.setShortcut(_translate("MainWindow", "Ctrl+R"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
-        self.actionKeyboard_Shortcuts.setText(_translate("MainWindow", "Keyboard-Shortcuts"))
+        self.actionKeyboard_Shortcuts.setText(
+            _translate("MainWindow", "Keyboard-Shortcuts")
+        )
         self.actionColor_Theme.setText(_translate("MainWindow", "Color-Theme"))
-        self.actionToggle_Line_Numbers.setText(_translate("MainWindow", "Toggle Line Numbers"))
-        self.actionToggle_Line_Numbers.setShortcut(_translate("MainWindow", "Ctrl+L, N"))
+        self.actionToggle_Line_Numbers.setText(
+            _translate("MainWindow", "Toggle Line Numbers")
+        )
+        self.actionToggle_Line_Numbers.setShortcut(
+            _translate("MainWindow", "Ctrl+L, N")
+        )
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

@@ -3,7 +3,6 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 
-
 class Popup(QWidget):
     def __init__(self, title: str, text: str, icon):
         QWidget.__init__(self)
@@ -26,12 +25,11 @@ class Popup(QWidget):
 class Editor(QTextEdit):
     def __init__(self, parent=None):
         QTextEdit.__init__(self, parent)
-        self.setGeometry(QRect(180, 40, 1650, 850)) 
-
+        self.setGeometry(QRect(180, 40, 1650, 850))
 
     def clear_text():
-        self.textEdit.setText('')
-        
+        self.textEdit.setText("")
+
     def textAlign(self, action):
         if action == self.actionAlignLeft:
             self.textEdit.setAlignment(Qt.AlignLeft | Qt.AlignAbsolute)

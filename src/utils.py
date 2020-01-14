@@ -1,5 +1,13 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QInputDialog, QLineEdit, QFileDialog, QTreeWidgetItem
+from PyQt5.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QWidget,
+    QInputDialog,
+    QLineEdit,
+    QFileDialog,
+    QTreeWidgetItem,
+)
 from PyQt5.QtGui import QIcon
 
 import glob, os
@@ -13,6 +21,7 @@ DIR_CLOSED_ICON_PATH = "src/assets/folder_closed.ico"
 DIR_OPENED_ICON_PATH = "src/assets/folder_opened.ico"
 FILE_ICON_PATH = "src/assets/file.ico"
 
+
 def create_label(window, name: str):
     return QtWidgets.QLabel(window).setText(name)
 
@@ -23,14 +32,13 @@ def label_set_text(label, text: str):
 
 
 ICONS = {
-    'py' : 'python.ico',
-    'js' : 'javascript.ico',
-    'c' : 'c.ico',
-    'cpp' : 'cpp.ico',
-    'cs' : 'csharp.ico',
-    'java' : 'java.ico'
+    "py": "python.ico",
+    "js": "javascript.ico",
+    "c": "c.ico",
+    "cpp": "cpp.ico",
+    "cs": "csharp.ico",
+    "java": "java.ico",
 }
-
 
 
 def load_filesystem_view(startpath, tree):
@@ -51,11 +59,11 @@ def load_filesystem_view(startpath, tree):
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
 
         else:
-            parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split('.')[-1])))
+            parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split(".")[-1])))
             parent_itm.item_type = "file"
 
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
-    
+
 
 def get_icon_for_extention(ext: str):
     if not os.path.isdir(f"src/assets/langs/{ext}"):
@@ -66,25 +74,41 @@ def get_icon_for_extention(ext: str):
 def openFileNameDialog():
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
-    fileName, _ = QFileDialog.getOpenFileName(None, "QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=options)
+    fileName, _ = QFileDialog.getOpenFileName(
+        None,
+        "QFileDialog.getOpenFileName()",
+        "",
+        "All Files (*);;Python Files (*.py)",
+        options=options,
+    )
     return fileName
-
-
 
 
 def openFileNamesDialog():
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
-    files, _ = QFileDialog.getOpenFileNames(None, "QFileDialog.getOpenFileNames()", "","All Files (*);;Python Files (*.py)", options=options)
+    files, _ = QFileDialog.getOpenFileNames(
+        None,
+        "QFileDialog.getOpenFileNames()",
+        "",
+        "All Files (*);;Python Files (*.py)",
+        options=options,
+    )
     if files:
         print(files)
+
 
 def saveFileDialog():
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
-    fileName, _ = QFileDialog.getSaveFileName(None, "QFileDialog.getSaveFileName()","","All Files (*);;Text Files (*.txt)", options=options)
+    fileName, _ = QFileDialog.getSaveFileName(
+        None,
+        "QFileDialog.getSaveFileName()",
+        "",
+        "All Files (*);;Text Files (*.txt)",
+        options=options,
+    )
     return fileName
-
 
 
 def get_file_name(curr_file):
@@ -93,15 +117,14 @@ def get_file_name(curr_file):
     return os.path.join(here, str(curr_file))
 
 
-
 def toggle_stylesheet(path):
-    '''
+    """
     Toggle the stylesheet to use the desired path in the Qt resource
     system (prefixed by `:/`) or generically (a path to a file on
     system).
 
     :path:      A full path to a resource or file on system
-    '''
+    """
 
     # get the QApplication instance,  or crash if not set
     app = QApplication.instance()
@@ -112,14 +135,13 @@ def toggle_stylesheet(path):
     file.open(QFile.ReadOnly | QFile.Text)
     stream = QTextStream(file)
     app.setStyleSheet(stream.readAll())
-    
 
-def find_tab_by_filepath(treeWidget , filepath: str):
+
+def find_tab_by_filepath(treeWidget, filepath: str):
     pass
 
 
-
-def is_file_in(filepath: str, directory: str = 'src'):
+def is_file_in(filepath: str, directory: str = "src"):
     f = []
     for (dirpath, dirnames, filenames) in walk(directory):
         f.extend(filenames)
@@ -128,6 +150,3 @@ def is_file_in(filepath: str, directory: str = 'src'):
 
 def get_relative_path(dirname: str, filepath: str):
     return os.path.join(dirname, filepath)
-        
-
-

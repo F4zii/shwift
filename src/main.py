@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
-from PyQt5.QtCore import QDir, QFile, QTextStream, QRect
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow
+from PyQt5.QtCore import QDir, QFile, QTextStream, QRect, QSettings
 from PyQt5.QtGui import *
 
 import breeze_resources
@@ -14,10 +14,11 @@ from utils import load_filesystem_view, toggle_stylesheet
 from widgets.tree import TreeFileWidget
 from widgets.tab import TabWidget
 from widgets.ui_widgets import Editor
+from widgets.toggle_button import ToggleButton
 
 import sys
 
-#sys.path.insert(0, 'src\widgets')
+# sys.path.insert(0, 'src\widgets')
 
 import os
 
@@ -25,18 +26,42 @@ import utils
 
 from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
 
-from tools import EmbTerminal
+from tools import Terminal
 
 
 # TODO Update Treeview after item addition, seperaate funcs
 # beginInsertRows() and endInsertRows()
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.translate = QtCore.QCoreApplication.translate
+        self.setAcceptDrops(True)
+        self.shellWin = Terminal()
+        self.setCentralWidget(self.shellWin)
+        self.setGeometry(0, 0, 600, 600)
+        self.setWindowTitle("QTerminal")
+        self.settings = QSettings("QTerminal", "QTerminal")
+        self.readSettings()
 
+    def closeEvent(self, e):
+        self.writeSettings()
+
+    def readSettings(self):
+        if self.settings.contains("commands"):
+            self.shellWin.commands = self.settings.value("commands")
+        if self.settings.contains("pos"):
+            pos = self.settings.value("pos", QPoint(200, 200))
+            self.move(pos)
+        if self.settings.contains("size"):
+            size = self.settings.value("size", QSize(400, 400))
+            self.resize(size)
+
+    def writeSettings(self):
+        self.settings.setValue("commands", self.shellWin.commands)
+        self.settings.setValue("pos", self.pos())
+        self.settings.setValue("size", self.size())
 
     def open_file(self, filepath=None):
         if not filepath:
@@ -44,18 +69,14 @@ class Ui_MainWindow(object):
         if not os.path.isfile(filepath):
             return
 
-        with open(str(filepath), 'r', encoding="utf8") as f:
+        with open(str(filepath), "r", encoding="utf8") as f:
             content = f.read()
             if not self.textEdit:
                 e = Editor(self.centralwidget)
                 e.setText(self.translate("MainWindow", f.read()))
                 self.textEdit = e
                 self.mainLayout.addWidget(self.textEdit)
-            # except UnicodeDecodeError:
-            #     pass
-            #filepath = os.path.join(os.path.dirname(__file__), filepath)
             tab = self.tabs.create_tab(content, filepath=filepath)
-            
 
     def save_file(self):
         curr_tab = self.tabs.currentWidget()
@@ -64,15 +85,14 @@ class Ui_MainWindow(object):
         f = utils.saveFileDialog()
         if not f:
             return
-        with open(str(f), 'w') as save_file:
+        with open(str(f), "w") as save_file:
             save_file.write(curr_tab.text)
+        self.tabs._text_changed = False
 
-
- 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 800)
-        MainWindow.setWindowIcon(QtGui.QIcon('src/assets/file.ico'))
+        MainWindow.resize(1600, 900)
+        MainWindow.setWindowIcon(QtGui.QIcon("src/assets/file.ico"))
         self.mainLayout = QVBoxLayout()
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -87,12 +107,13 @@ class Ui_MainWindow(object):
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
-        # self.tabs.create_untitled_tab() 
+        self.toggle_button = ToggleButton()
+        # self.tabs.create_untitled_tab()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
 
-        self.treeView = TreeFileWidget(self ,self.centralwidget)
-        self.treeView.setHeaderLabel('File System')
+        self.treeView = TreeFileWidget(self, self.centralwidget)
+        self.treeView.setHeaderLabel("File System")
         self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 850))
         load_filesystem_view(os.path.dirname(os.path.realpath(__file__)), self.treeView)
 
@@ -156,7 +177,7 @@ class Ui_MainWindow(object):
 
         self.actionSettings = QtWidgets.QAction(MainWindow)
         self.actionSettings.setObjectName("actionSettings")
-        
+
         self.actionKeyboard_Shortcuts = QtWidgets.QAction(MainWindow)
         self.actionKeyboard_Shortcuts.setObjectName("actionKeyboard_Shortcuts")
 
@@ -191,7 +212,6 @@ class Ui_MainWindow(object):
         self.tabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(self.translate("MainWindow", "Shwift"))
         # self.tabs.setTabText(self.tabs.indexOf(self.tab), self.translate("MainWindow", "Tab 1"))
@@ -205,20 +225,33 @@ class Ui_MainWindow(object):
         self.actionNew.setShortcut(self.translate("MainWindow", "Ctrl+N"))
         self.actionNew.triggered.connect(self.tabs.create_untitled_tab)
         self.actionOpen.setText(self.translate("MainWindow", "Open"))
-        self.actionOpen.setStatusTip(self.translate("MainWindow", "Open a file from your system"))
+        self.actionOpen.setStatusTip(
+            self.translate("MainWindow", "Open a file from your system")
+        )
         self.actionOpen.setShortcut(self.translate("MainWindow", "Ctrl+O"))
         self.actionOpen.triggered.connect(self.open_file)
         self.actionSave.setText(self.translate("MainWindow", "Save"))
-        self.actionSave.setStatusTip(self.translate("MainWindow", "Save the current working file"))
+        self.actionSave.setStatusTip(
+            self.translate("MainWindow", "Save the current working file")
+        )
         self.actionSave.setShortcut(self.translate("MainWindow", "Ctrl+S"))
         self.actionSave_As.setText(self.translate("MainWindow", "Save-As"))
-        self.actionSave_As.setStatusTip(self.translate("MainWindow", "Save the current working file as a new file in your system"))
+        self.actionSave_As.setStatusTip(
+            self.translate(
+                "MainWindow",
+                "Save the current working file as a new file in your system",
+            )
+        )
         self.actionSave_As.setShortcut(self.translate("MainWindow", "Ctrl+Shift+S"))
         self.actionUndo.setText(self.translate("MainWindow", "Undo"))
-        self.actionUndo.setStatusTip(self.translate("MainWindow", "Undo previous actions"))
+        self.actionUndo.setStatusTip(
+            self.translate("MainWindow", "Undo previous actions")
+        )
         self.actionUndo.setShortcut(self.translate("MainWindow", "Ctrl+Z"))
         self.actionRedo.setText(self.translate("MainWindow", "Redo"))
-        self.actionRedo.setStatusTip(self.translate("MainWindow", "Redo previous actions"))
+        self.actionRedo.setStatusTip(
+            self.translate("MainWindow", "Redo previous actions")
+        )
         self.actionRedo.setShortcut(self.translate("MainWindow", "Ctrl+Y"))
         self.actionCopy.setText(self.translate("MainWindow", "Copy"))
         self.actionCopy.setShortcut(self.translate("MainWindow", "Ctrl+C"))
@@ -231,12 +264,18 @@ class Ui_MainWindow(object):
         self.actionReplace.setText(self.translate("MainWindow", "Replace"))
         self.actionReplace.setShortcut(self.translate("MainWindow", "Ctrl+R"))
         self.actionSettings.setText(self.translate("MainWindow", "Settings"))
-        self.actionKeyboard_Shortcuts.setText(self.translate("MainWindow", "Keyboard-Shortcuts"))
+        self.actionKeyboard_Shortcuts.setText(
+            self.translate("MainWindow", "Keyboard-Shortcuts")
+        )
         self.actionColor_Theme.setText(self.translate("MainWindow", "Color-Theme"))
-        self.actionToggle_Line_Numbers.setText(self.translate("MainWindow", "Toggle Line Numbers"))
-        self.actionToggle_Line_Numbers.setShortcut(self.translate("MainWindow", "Ctrl+L, N"))
+        self.actionToggle_Line_Numbers.setText(
+            self.translate("MainWindow", "Toggle Line Numbers")
+        )
+        self.actionToggle_Line_Numbers.setShortcut(
+            self.translate("MainWindow", "Ctrl+L, N")
+        )
 
-        def initUI(self):      
+        def initUI(self):
             # formatting
             self.resize(550, 400)
             self.setWindowTitle("Toychest")
@@ -252,21 +291,21 @@ class Ui_MainWindow(object):
             # signals
 
             # main layout
-            self.mainLayout.setContentsMargins(0,0,0,0)
+            self.mainLayout.setContentsMargins(0, 0, 0, 0)
             self.mainLayout.addWidget(self.toollist)
             self.mainLayout.addWidget(self.tabs)
             self.mainLayout.addWidget(self.treeView)
             # checking, maybe will change that to happen when opening
             self.mainLayout.addChildWidget(self.textEdit)
-            MainWindow.setLayout(self.mainLayout)  
+            MainWindow.setLayout(self.mainLayout)
             self.setLayout(self.mainLayout)
             # set model for toollist
             self.toollist.setModel(self.source_model)
 
-            
         # utils.openFileNameDialog()
         # utils.openFileNamesDialog()
         # utils.saveFileDialog()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

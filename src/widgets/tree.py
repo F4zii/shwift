@@ -6,9 +6,8 @@ from PyQt5.QtGui import QIcon
 from utils import DIR_OPENED_ICON_PATH, DIR_CLOSED_ICON_PATH, FILE_ICON_PATH
 
 
-
 class TreeFileWidget(QTreeWidget):
-    def __init__(self, windowUi ,parent = None):
+    def __init__(self, windowUi, parent=None):
         QTreeWidget.__init__(self, parent)
         self.parent = parent
         self.window = windowUi
@@ -19,8 +18,8 @@ class TreeFileWidget(QTreeWidget):
         self.clicks = 0
 
     def on_item_entered(it, col):
-        pass    
-    
+        pass
+
     def on_item_clicked(self, it, col):
         """
         An event handler being called by QTreeWidget.itemClicked
@@ -32,19 +31,16 @@ class TreeFileWidget(QTreeWidget):
         @param it - The TreeWidgetItem that was clicked
         @param col - The column of the TreeWidgetItem that was clicked
         """
-        
+
         if it.item_type == "file":
             self.window.open_file(self.currentItem().file_path)
 
         else:
             self.toggle_folder_icon(it)
 
-
     def on_item_expanded(self, it):
         if it.item_type == "dir":
             self.toggle_folder_icon(it)
-            
-            
 
     def toggle_folder_icon(self, item):
         # loop = QEventLoop()
@@ -55,9 +51,6 @@ class TreeFileWidget(QTreeWidget):
             item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
         else:
             item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
-
-          
-
 
 
 class TreeFileWidgetItem(QTreeWidgetItem):
