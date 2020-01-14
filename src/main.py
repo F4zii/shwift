@@ -39,36 +39,33 @@ class Ui_MainWindow(object):
 
 
     def open_file(self, filepath=None):
-        print("open")
         if not filepath:
             filepath = utils.openFileNameDialog()
         if not os.path.isfile(filepath):
             return
 
         with open(str(filepath), 'r', encoding="utf8") as f:
-            e = Editor(self.centralwidget)
-            # try:
-            e.setText(self.translate("MainWindow", f.read()))
+            content = f.read()
             if not self.textEdit:
+                e = Editor(self.centralwidget)
+                e.setText(self.translate("MainWindow", f.read()))
                 self.textEdit = e
                 self.mainLayout.addWidget(self.textEdit)
-            print(self.mainLayout.findChild(QWidget, "textEdit"))
             # except UnicodeDecodeError:
             #     pass
             #filepath = os.path.join(os.path.dirname(__file__), filepath)
-            tab = self.tabs.create_tab(e, filepath=filepath)
-            print("End")
+            tab = self.tabs.create_tab(content, filepath=filepath)
             
 
     def save_file(self):
         curr_tab = self.tabs.currentWidget()
-        if not hasattr(curr_tab, "textEdit"):
+        if curr_tab.text == "":
             curr_tab = self.tabs.create_untitled_tab()
         f = utils.saveFileDialog()
         if not f:
             return
         with open(str(f), 'w') as save_file:
-            save_file.write(curr_tab.textEdit.toPlainText())
+            save_file.write(curr_tab.text)
 
 
     
