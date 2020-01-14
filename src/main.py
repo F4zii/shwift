@@ -49,12 +49,12 @@ class Ui_MainWindow(object):
             e = Editor(self.centralwidget)
             # try:
             e.setText(self.translate("MainWindow", f.read()))
+            if not self.textEdit:
+                self.textEdit = e
             # except UnicodeDecodeError:
             #     pass
             #filepath = os.path.join(os.path.dirname(__file__), filepath)
             tab = self.tabs.create_tab(e, filepath=filepath)
-            print("E: ", e.toPlainText())
-            print("Current ", self.tabs.currentWidget().textEdit.toPlainText())
             print("End")
             
 
@@ -83,17 +83,17 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(190, 50, 1650, 830))
+        self.textEdit.setGeometry(QtCore.QRect(190, 55, 1650, 830))
         self.font = QtGui.QFont()
         self.font.setFamily("Consolas")
         self.font.setPointSize(16)
         self.textEdit.setFont(self.font)
         self.tabs = TabWidget(self, self.centralwidget)
-        self.tabs.setGeometry(QtCore.QRect(190, 15, 1650, 100))
+        self.tabs.setGeometry(QtCore.QRect(190, 30, 1650, 100))
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
-        self.tabs.create_untitled_tab() 
+        # self.tabs.create_untitled_tab() 
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
 
