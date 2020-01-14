@@ -31,6 +31,7 @@ class TabWidget(QTabWidget):
         self.addTab(tab, "")
         self.setTabText(self.indexOf(tab), self.translate("MainWindow", tab.file_name))
         self.setCurrentWidget(tab)
+        return tab
 
 
     def create_untitled_tab(self):
@@ -52,21 +53,18 @@ class TabWidget(QTabWidget):
         print("tab change")
         curr_tab = self.currentWidget()
         if curr_tab is None:
-            print("No Current")
-            if self.window.textEdit:
-                self.window.mainLayout.removeWidget(self.window.textEdit)  
-                self.window.textEdit.deleteLater()
-                self.window.textEdit = None
+            # self.window.mainLayout.removeWidget(self.window.textEdit)  
+            self.window.textEdit.deleteLater()
+            self.window.textEdit = None
             return
+        
         print("Current " , self.currentIndex())
         if curr_tab.textEdit is None:
             curr_tab = self.create_untitled_tab()
-        # if not self.window.textEdit:
-        #     self.window.textEdit = Editor(self.parent)
+
         if self.window.textEdit:
             self.window.textEdit.setText(curr_tab.textEdit.toPlainText())
-              
-
+       
 
 class Tab(QWidget):
     def __init__(self, textEdit, filepath: str, parent=None):
