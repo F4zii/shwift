@@ -31,3 +31,13 @@ class Editor(QTextEdit):
 
     def clear_text():
         self.textEdit.setText('')
+        
+    def textAlign(self, action):
+        if action == self.actionAlignLeft:
+            self.textEdit.setAlignment(Qt.AlignLeft | Qt.AlignAbsolute)
+        elif action == self.actionAlignCenter:
+            self.textEdit.setAlignment(Qt.AlignHCenter)
+        elif action == self.actionAlignRight:
+            self.textEdit.setAlignment(Qt.AlignRight | Qt.AlignAbsolute)
+        elif action == self.actionAlignJustify:
+            self.textEdit.setAlignment(Qt.AlignJustify)
