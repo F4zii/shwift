@@ -32,12 +32,16 @@ def label_set_text(label, text: str):
 
 
 ICONS = {
-    "py": "python.ico",
-    "js": "javascript.ico",
-    "c": "c.ico",
-    "cpp": "cpp.ico",
-    "cs": "csharp.ico",
-    "java": "java.ico",
+    "py" : "python.ico",
+    "js" : "javascript.ico",
+    "c" : "c.ico",
+    "cpp" : "cpp.ico",
+    "cs" : "csharp.ico",
+    "java" : "java.ico",
+    "css" : "css.ico",
+    "html" : "html.ico",
+    "pl" : "perl.ico",
+    "php" : "php.ico"
 }
 
 
