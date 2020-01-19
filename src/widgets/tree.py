@@ -9,8 +9,8 @@ from utils import DIR_OPENED_ICON_PATH, DIR_CLOSED_ICON_PATH, FILE_ICON_PATH
 class TreeFileWidget(QTreeWidget):
     def __init__(self, windowUi, parent=None):
         QTreeWidget.__init__(self, parent)
-        self.parent = parent
-        self.window = windowUi
+        self._parent = parent
+        self._window = windowUi
         self.itemExpanded.connect(self.on_item_expanded)
         self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
@@ -33,7 +33,7 @@ class TreeFileWidget(QTreeWidget):
         """
 
         if it.item_type == "file":
-            self.window.open_file(self.currentItem().file_path)
+            self._window.open_file(self.currentItem().file_path)
 
         else:
             self.toggle_folder_icon(it)
@@ -51,6 +51,9 @@ class TreeFileWidget(QTreeWidget):
             item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
         else:
             item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
+    @property
+    def window(self):
+        return self._window
 
 
 class TreeFileWidgetItem(QTreeWidgetItem):
