@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 
 
 from utils import DIR_OPENED_ICON_PATH, DIR_CLOSED_ICON_PATH, FILE_ICON_PATH
-
+from threads import TreeViewUpdateThread
 
 class TreeFileWidget(QTreeWidget):
     def __init__(self, windowUi, parent=None):
@@ -15,6 +15,7 @@ class TreeFileWidget(QTreeWidget):
         self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
         self.itemEntered.connect(self.on_item_entered)
+        self._update_signal = TreeViewUpdateThread().tree_view_modified
         self.clicks = 0
 
     @property
