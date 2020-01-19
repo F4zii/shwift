@@ -29,7 +29,6 @@ from tools import Terminal
 
 
 # TODO Update Treeview after item addition, seperaate funcs
-# beginInsertRows() and endInsertRows()
 
 
 class Ui_MainWindow(QMainWindow):
@@ -96,7 +95,7 @@ class Ui_MainWindow(QMainWindow):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(190, 55, 1650, 850))
+        self.textEdit.setGeometry(QtCore.QRect(190, 55, 1720, 850))
         self.font = QtGui.QFont()
         self.font.setFamily("Consolas")
         self.font.setPointSize(16)
@@ -317,5 +316,5 @@ if __name__ == "__main__":
     app.setStyleSheet(stream.readAll())
     # MainWindow.setContentsMargins(10, 10, 10, 10)
     MainWindow.show()
-    #  MainWindow.showFullScreen()
+    MainWindow.showMaximized()
     sys.exit(app.exec_())
