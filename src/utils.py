@@ -52,6 +52,8 @@ def load_filesystem_view(startpath, tree):
     @param tree
     @return
     """
+    if not startpath:
+        return 
     for element in os.listdir(startpath):
         path_info = startpath + "/" + element
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
