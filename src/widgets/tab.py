@@ -90,7 +90,8 @@ class Tab(QWidget):
             self._file_name = f"Untitled-{self._parent.new_file_count-1}"
             return
         basename = os.path.basename(self._filepath)
-        if is_file_in(filepath=basename):
+        treeView = self._parent.window.treeView
+        if is_file_in(filepath=basename, directory=treeView.dirname):
             self._file_name = basename
         else:
             self._file_name = get_relative_path(os.path.dirname(__file__), self._filepath)
