@@ -22,7 +22,7 @@ class Popup(QWidget):
         e = msg.exec_()
 
 
-class Editor(QTextEdit):
+class Editor(QPlainTextEdit):
     def __init__(self, parent=None):
         QTextEdit.__init__(self, parent)
         self.setGeometry(QRect(180, 40, 1650, 850))

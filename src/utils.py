@@ -32,12 +32,16 @@ def label_set_text(label, text: str):
 
 
 ICONS = {
-    "py": "python.ico",
-    "js": "javascript.ico",
-    "c": "c.ico",
-    "cpp": "cpp.ico",
-    "cs": "csharp.ico",
-    "java": "java.ico",
+    "py" : "python.ico",
+    "js" : "javascript.ico",
+    "c" : "c.ico",
+    "cpp" : "cpp.ico",
+    "cs" : "csharp.ico",
+    "java" : "java.ico",
+    "css" : "css.ico",
+    "html" : "html.ico",
+    "pl" : "perl.ico",
+    "php" : "php.ico"
 }
 
 
@@ -150,3 +154,12 @@ def is_file_in(filepath: str, directory: str = "src"):
 
 def get_relative_path(dirname: str, filepath: str):
     return os.path.join(dirname, filepath)
+
+
+def safe_file_read(filepath: str):
+    try:
+        with open(str(filepath), "r", encoding="utf8") as f:
+            return f.read()
+    except UnicodeDecodeError:
+
+

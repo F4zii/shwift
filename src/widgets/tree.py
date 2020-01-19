@@ -17,6 +17,14 @@ class TreeFileWidget(QTreeWidget):
         self.itemEntered.connect(self.on_item_entered)
         self.clicks = 0
 
+    @property
+    def parent(self):
+        return self._parent
+
+    @property
+    def window(self):
+        return self._window
+
     def on_item_entered(it, col):
         pass
 
