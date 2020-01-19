@@ -27,9 +27,10 @@ from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
 
 from tools import Terminal
 
+from threads import TreeViewUpdateThread
+
 
 # TODO Update Treeview after item addition, seperaate funcs
-# beginInsertRows() and endInsertRows()
 
 
 class Ui_MainWindow(QMainWindow):
