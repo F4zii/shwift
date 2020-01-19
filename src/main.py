@@ -78,7 +78,7 @@ class Ui_MainWindow(QMainWindow):
                 self.mainLayout.addWidget(self.textEdit)
             tab = self.tabs.create_tab(content, filepath=filepath)
 
-    def save_file(self):
+    def save_file_as(self):
         curr_tab = self.tabs.currentWidget()
         if not curr_tab:
             curr_tab = self.tabs.create_untitled_tab()
@@ -87,7 +87,56 @@ class Ui_MainWindow(QMainWindow):
             return
         with open(str(f), "w") as save_file:
             save_file.write(curr_tab.text)
-        self.tabs._text_changed = False
+        self.tabs.text_modified = False
+
+
+
+    # def save_file(self):
+    #     curr_tab = self.tabs.currentWidget()
+    #     if (not curr_tab.filename.startswith("Untitled")):
+    #         file = QFile(curr_tab.filename)
+    #         print(self.filename)
+    #         if not file.open( QFile.WriteOnly | QFile.Text):
+    #             QMessageBox.warning(self, "Error",
+    #                     "Cannot write file %s:\n%s." % (curr_tab.filename, file.errorString()))
+    #             return
+
+    #         outstr = QTextStream(file)
+    #         QApplication.setOverrideCursor(Qt.WaitCursor)
+    #         outstr << self.textEdit.toPlainText()
+    #         QApplication.restoreOverrideCursor()                
+    #         self.setModified(False)
+    #         curr_tab.filename = QFileInfo(curr_tab.filename).fileName() 
+    #         self.setWindowTitle(self.fname + "[*]")
+    #         self.setCurrentFile(self.filename)
+
+
+    #     else:
+    #         self.fileSaveAs()
+
+    # def save_modified_file(self):
+    #     if not self.tabs.text_modified:
+    #         return True
+
+    #     curr_tab = self.tabs.currentWidget()
+
+    #     ret = QMessageBox.question(self, "Message",
+    #             "<h4><p>The document was modified.</p>\n" \
+    #             "<p>Do you want to save changes?</p></h4>",
+    #             QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+
+    #     if ret == QMessageBox.Yes:
+    #         if self.filename.startswith("Untitled"):
+    #             self.save_file_as()
+    #             return False
+    #         else:
+    #             self.save_file()
+    #             return True
+
+    #     if ret == QMessageBox.Cancel:
+    #         return False
+
+    #     return True   
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -114,7 +163,7 @@ class Ui_MainWindow(QMainWindow):
         self.treeView = TreeFileWidget(self, self.centralwidget)
         self.treeView.setHeaderLabel("File System")
         self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 875))
-        load_filesystem_view(os.path.dirname(os.path.realpath(__file__)), self.treeView)
+        load_filesystem_view(self.treeView.dirname, self.treeView)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -148,7 +197,7 @@ class Ui_MainWindow(QMainWindow):
 
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
-        self.actionSave.triggered.connect(self.save_file)
+        self.actionSave.triggered.connect(self.save_file_as)
 
         self.actionSave_As = QtWidgets.QAction(MainWindow)
         self.actionSave_As.setObjectName("actionSave_As")
