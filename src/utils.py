@@ -154,3 +154,12 @@ def is_file_in(filepath: str, directory: str = "src"):
 
 def get_relative_path(dirname: str, filepath: str):
     return os.path.join(dirname, filepath)
+
+
+def safe_file_read(filepath: str):
+    try:
+        with open(str(filepath), "r", encoding="utf8") as f:
+            return f.read()
+    except UnicodeDecodeError:
+
+
