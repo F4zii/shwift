@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow, QFileDialog
 from PyQt5.QtCore import QDir, QFile, QTextStream, QRect, QSettings
 from PyQt5.QtGui import *
 
@@ -30,7 +30,7 @@ from tools import Terminal
 from threads import TreeViewUpdateThread
 
 
-# TODO Update Treeview after item addition, seperaate funcs
+# TODO Only load after expandation, clear code
 
 
 class Ui_MainWindow(QMainWindow):
@@ -63,7 +63,7 @@ class Ui_MainWindow(QMainWindow):
         self.settings.setValue("pos", self.pos())
         self.settings.setValue("size", self.size())
 
-    def open_file(self, filepath=None):
+    def open_file(self, filepath: str = None):
         if not filepath:
             filepath = utils.openFileNameDialog()
         if not os.path.isfile(filepath):
@@ -89,7 +89,14 @@ class Ui_MainWindow(QMainWindow):
             save_file.write(curr_tab.text)
         self.tabs.text_modified = False
 
+    def open_folder(self, dirpath: str = None):
+        if not dirpath:
+            folder = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+        if not os.path.isdir(folder):
+            return
 
+        load_filesystem_view(folder, self.treeView)
+        self.treeView.dirname = folder
 
     # def save_file(self):
     #     curr_tab = self.tabs.currentWidget()
@@ -195,6 +202,9 @@ class Ui_MainWindow(QMainWindow):
         self.actionOpen = QtWidgets.QAction(MainWindow)
         self.actionOpen.setObjectName("actionOpen")
 
+        self.actionOpenFolder = QtWidgets.QAction(MainWindow)
+        self.actionOpenFolder.setObjectName("actionOpenFolder")
+
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
         self.actionSave.triggered.connect(self.save_file_as)
@@ -241,6 +251,7 @@ class Ui_MainWindow(QMainWindow):
 
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addAction(self.actionOpenFolder)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_As)
         self.menuFile.addAction(self.menuPreferences.menuAction())
@@ -278,6 +289,14 @@ class Ui_MainWindow(QMainWindow):
         )
         self.actionOpen.setShortcut(self.translate("MainWindow", "Ctrl+O"))
         self.actionOpen.triggered.connect(self.open_file)
+
+        self.actionOpenFolder.setText(self.translate("MainWindow", "Open Folder"))
+        self.actionOpenFolder.setStatusTip(
+            self.translate("MainWindow", "Open a folder from your system")
+        )
+        self.actionOpenFolder.setShortcut(self.translate("MainWindow", "Ctrl+F+O"))
+        self.actionOpenFolder.triggered.connect(self.open_folder)
+
         self.actionSave.setText(self.translate("MainWindow", "Save"))
         self.actionSave.setStatusTip(
             self.translate("MainWindow", "Save the current working file")

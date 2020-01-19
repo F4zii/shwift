@@ -3,8 +3,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 
 
-from utils import DIR_OPENED_ICON_PATH, DIR_CLOSED_ICON_PATH, FILE_ICON_PATH
 from threads import TreeViewUpdateThread
+
+from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH
+
 
 class TreeFileWidget(QTreeWidget):
     def __init__(self, windowUi, parent=None):
@@ -30,6 +32,15 @@ class TreeFileWidget(QTreeWidget):
     @property
     def dirname(self):
         return self._dirname
+
+
+    @dirname.setter
+    def dirname(self, name):
+        self._dirname = name
+
+    @property
+    def window(self):
+        return self._window
 
     def on_item_entered(it, col):
         pass
@@ -65,13 +76,12 @@ class TreeFileWidget(QTreeWidget):
             item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
         else:
             item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
-    @property
-    def window(self):
-        return self._window
+
 
 
 class TreeFileWidgetItem(QTreeWidgetItem):
     def __init__(self, tree, text, file_path: str, type: str):
-        QTreeWidgetItem.__init__(self, tree, text)
+        super().__init__()
+        self.path = file_path
         # self.file_path = file_path
         # self.type = type
