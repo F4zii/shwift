@@ -11,11 +11,12 @@ class TreeFileWidget(QTreeWidget):
         QTreeWidget.__init__(self, parent)
         self._parent = parent
         self._window = windowUi
+        self._dirname = ''
         self.itemExpanded.connect(self.on_item_expanded)
         self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
         self.itemEntered.connect(self.on_item_entered)
-        self._update_signal = TreeViewUpdateThread().tree_view_modified
+        self._update_signal = TreeViewUpdateThread(dirname='.').tree_view_modified
         self.clicks = 0
 
     @property
@@ -25,6 +26,10 @@ class TreeFileWidget(QTreeWidget):
     @property
     def window(self):
         return self._window
+
+    @property
+    def dirname(self):
+        return self._dirname
 
     def on_item_entered(it, col):
         pass
