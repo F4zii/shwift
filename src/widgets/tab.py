@@ -22,6 +22,7 @@ class TabWidget(QTabWidget):
         self.tabCloseRequested.connect(self.remove_tab)
         self.last_widget = None
         self._text_changed = False
+        
         self.window.textEdit.textChanged.connect(self.save_current_text)
 
     def create_tab(self, text, filepath: str, closable: bool = True):
