@@ -96,7 +96,7 @@ class Ui_MainWindow(QMainWindow):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(190, 55, 1650, 830))
+        self.textEdit.setGeometry(QtCore.QRect(190, 55, 1650, 850))
         self.font = QtGui.QFont()
         self.font.setFamily("Consolas")
         self.font.setPointSize(16)
@@ -112,7 +112,7 @@ class Ui_MainWindow(QMainWindow):
 
         self.treeView = TreeFileWidget(self, self.centralwidget)
         self.treeView.setHeaderLabel("File System")
-        self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 850))
+        self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 875))
         load_filesystem_view(os.path.dirname(os.path.realpath(__file__)), self.treeView)
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -317,4 +317,5 @@ if __name__ == "__main__":
     app.setStyleSheet(stream.readAll())
     # MainWindow.setContentsMargins(10, 10, 10, 10)
     MainWindow.show()
+    #  MainWindow.showFullScreen()
     sys.exit(app.exec_())

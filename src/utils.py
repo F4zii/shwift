@@ -161,5 +161,5 @@ def safe_file_read(filepath: str):
         with open(str(filepath), "r", encoding="utf8") as f:
             return f.read()
     except UnicodeDecodeError:
-
+        pass
 
