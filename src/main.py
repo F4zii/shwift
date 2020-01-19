@@ -308,7 +308,8 @@ class Ui_MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    app.setStyle('Breeze')
+    # ['Breeze', 'Oxygen', 'QtCurve', 'Windows', 'Fusion']
+    app.setStyle('Fusion')
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
