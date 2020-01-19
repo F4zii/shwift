@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QFileDialog,
     QTreeWidgetItem,
+    QTreeWidget,
 )
 from PyQt5.QtGui import QIcon
 
@@ -54,6 +55,10 @@ def load_filesystem_view(startpath, tree):
     """
     if not startpath:
         return 
+
+    if isinstance(tree, QTreeWidget):
+        tree.clear()
+
     for element in os.listdir(startpath):
         path_info = startpath + "/" + element
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
@@ -82,7 +87,7 @@ def openFileNameDialog():
     options |= QFileDialog.DontUseNativeDialog
     fileName, _ = QFileDialog.getOpenFileName(
         None,
-        "QFileDialog.getOpenFileName()",
+        "Open a File",
         "",
         "All Files (*);;Python Files (*.py)",
         options=options,
@@ -95,7 +100,7 @@ def openFileNamesDialog():
     options |= QFileDialog.DontUseNativeDialog
     files, _ = QFileDialog.getOpenFileNames(
         None,
-        "QFileDialog.getOpenFileNames()",
+        "Open Files",
         "",
         "All Files (*);;Python Files (*.py)",
         options=options,
@@ -109,7 +114,7 @@ def saveFileDialog():
     options |= QFileDialog.DontUseNativeDialog
     fileName, _ = QFileDialog.getSaveFileName(
         None,
-        "QFileDialog.getSaveFileName()",
+        "Save file",
         "",
         "All Files (*);;Text Files (*.txt)",
         options=options,
