@@ -13,8 +13,8 @@ class TabWidget(QTabWidget):
     def __init__(self, window, parent=None):
         super(QTabWidget, self).__init__(parent)
         self.window = window
-        self.parent = parent
-        # self.textEdit = QTextEdit(self.parent)
+        self._parent = parent
+        # self.textEdit = QTextEdit(self._parent)
         # self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
         self._translate = QCoreApplication.translate
         self.new_file_count = 0
@@ -26,10 +26,10 @@ class TabWidget(QTabWidget):
 
     def create_tab(self, text, filepath: str, closable: bool = True):
         tab = Tab(text=text, filepath=filepath, parent=self)
-        tab.setObjectName(tab.file_name)
+        tab.setObjectName(tab.filename)
         # tab.padding
         self.addTab(tab, "")
-        self.setTabText(self.indexOf(tab), self._translate("MainWindow", tab.file_name))
+        self.setTabText(self.indexOf(tab), self._translate("MainWindow", tab.filename))
         self.setCurrentWidget(tab)
         return tab
 
@@ -78,18 +78,25 @@ class TabWidget(QTabWidget):
 class Tab(QWidget):
     def __init__(self, text, filepath: str, parent=None):
         super(QWidget, self).__init__(parent)
-        self.parent = parent
+        self._parent = parent
         self.text = text
-        self.filepath = filepath
-        self.file_name = ""
+        self._filepath = filepath
+        self._file_name = ""
         self.external_init()
 
     def external_init(self):
-        if self.filepath.startswith("Untitled"):
-            self.file_name = f"Untitled-{self.parent.new_file_count-1}"
+        if self._filepath.startswith("Untitled"):
+            self._file_name = f"Untitled-{self._parent.new_file_count-1}"
             return
-        basename = os.path.basename(self.filepath)
+        basename = os.path.basename(self._filepath)
         if is_file_in(filepath=basename):
-            self.file_name = basename
+            self._file_name = basename
         else:
-            self.file_name = get_relative_path(os.path.dirname(__file__), self.filepath)
+            self._file_name = get_relative_path(os.path.dirname(__file__), self._filepath)
+
+    @property
+    def filepath(self):
+        return self._filepath
+    @property
+    def filename(self):
+        return self._file_name
