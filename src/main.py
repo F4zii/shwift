@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow
 from PyQt5.QtCore import QDir, QFile, QTextStream, QRect, QSettings
 from PyQt5.QtGui import *
 
-import breeze_resources
+import stylesheets
 
 # from pygments.lexers import get_lexer_for_filename
 # from pygments import highlight
@@ -14,7 +14,6 @@ from utils import load_filesystem_view, toggle_stylesheet
 from widgets.tree import TreeFileWidget
 from widgets.tab import TabWidget
 from widgets.ui_widgets import Editor
-from widgets.toggle_button import ToggleButton
 
 import sys
 
@@ -107,7 +106,6 @@ class Ui_MainWindow(QMainWindow):
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
-        self.toggle_button = ToggleButton()
         # self.tabs.create_untitled_tab()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
