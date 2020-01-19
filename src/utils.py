@@ -163,3 +163,19 @@ def safe_file_read(filepath: str):
     except UnicodeDecodeError:
         pass
 
+def get_file_list(dirName):
+    # create a list of file and sub directories 
+    # names in the given directory 
+    curr_file_list = os.listdir(dirName)
+    all_files = list()
+    # Iterate over all the entries
+    for entry in curr_file_list:
+        # Create full path
+        fullPath = os.path.join(dirName, entry)
+        # If entry is a directory then get the list of files in this directory 
+        if os.path.isdir(fullPath):
+            all_files = all_files + get_file_list(fullPath)
+        else:
+            all_files.append(fullPath)
+                
+    return all_files
