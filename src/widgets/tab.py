@@ -21,8 +21,8 @@ class TabWidget(QTabWidget):
         self.currentChanged.connect(self._on_tab_change)
         self.tabCloseRequested.connect(self.remove_tab)
         self.last_widget = None
-        self._text_changed = False
-        
+        self.text_modified = False
+
         self.window.textEdit.textChanged.connect(self.save_current_text)
 
     def create_tab(self, text, filepath: str, closable: bool = True):
@@ -61,7 +61,7 @@ class TabWidget(QTabWidget):
             self.window.textEdit.setText(curr_tab.text)
 
     def save_current_text(self):
-        self._text_changed = True
+        self.text_modified = True
         widget = self.get_last_widget()
         if not widget:
             return
@@ -98,6 +98,7 @@ class Tab(QWidget):
     @property
     def filepath(self):
         return self._filepath
+
     @property
     def filename(self):
         return self._file_name
