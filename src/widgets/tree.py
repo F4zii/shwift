@@ -5,7 +5,7 @@ from PyQt5.QtGui import QIcon
 
 from threads import TreeViewUpdateThread
 
-from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH
+from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, load_filesystem_view
 
 
 class TreeFileWidget(QTreeWidget):
@@ -14,8 +14,8 @@ class TreeFileWidget(QTreeWidget):
         self._parent = parent
         self._window = windowUi
         self._dirname = ''
-        self.itemExpanded.connect(self.on_item_expanded)
-        self.itemCollapsed.connect(self.on_item_expanded)
+        # self.itemExpanded.connect(self.on_item_expanded)
+        # self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
         self.itemEntered.connect(self.on_item_entered)
         self._update_signal = TreeViewUpdateThread(dirname='.').tree_view_modified
@@ -56,16 +56,16 @@ class TreeFileWidget(QTreeWidget):
         @param it - The TreeWidgetItem that was clicked
         @param col - The column of the TreeWidgetItem that was clicked
         """
+        if it.item_type == "dir":
+            load_filesystem_view(it.file_path, it)
+            self.toggle_folder_icon(it)
 
         if it.item_type == "file":
             self._window.open_file(self.currentItem().file_path)
 
-        else:
-            self.toggle_folder_icon(it)
-
-    def on_item_expanded(self, it):
-        if it.item_type == "dir":
-            self.toggle_folder_icon(it)
+    # def on_item_expanded(self, it):
+    #     if it.item_type == "dir":
+    #         self.toggle_folder_icon(it)
 
     def toggle_folder_icon(self, item):
         # loop = QEventLoop()
@@ -73,9 +73,13 @@ class TreeFileWidget(QTreeWidget):
         # loop.exec_()
         expanded = item.isExpanded()
         if expanded:
-            item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
-        else:
+            item.setExpanded(False)
             item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
+
+        else:
+            item.setExpanded(True)
+            item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
+
 
 
 

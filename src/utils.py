@@ -64,9 +64,10 @@ def load_filesystem_view(startpath, tree):
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
         parent_itm.file_path = path_info
         if os.path.isdir(path_info):
-            load_filesystem_view(path_info, parent_itm)
+            # load_filesystem_view(path_info, parent_itm)
             parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
             parent_itm.item_type = "dir"
+            parent_itm.setExpanded(True)
             # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
 
         else:
