@@ -3,6 +3,8 @@
 
 Shwift is a cross-platform Text editor That supports programming.
 
+
+
 # What's inside?
 
   Beside Basic operations such as open and save, Shwift supplies you the power of creating and working on untitled files, toggle between files in your system with file-needed info provided
