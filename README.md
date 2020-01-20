@@ -13,7 +13,7 @@ Shwift is a cross-platform Text editor That supports programming.
 
 # Coming soon!
 
-  - Syntax highlighting  (Coming soon)
+  - Syntax highlighting
   - Attached to editor Terminal
   - Software optimizations
 
