@@ -31,7 +31,7 @@ from threads import TreeViewUpdateThread
 
 
 # TODO Only load after expandation, clear code
-
+# https://doc.qt.io/qt-5/qfilesystemwatcher.html
 
 class Ui_MainWindow(QMainWindow):
     def __init__(self):
