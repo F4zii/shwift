@@ -22,7 +22,6 @@ Shwift is a cross-platform Text editor That supports programming.
 Currently, shwift has no official realese or download, so you might have to clone this repositoy with all its dependencies
 
 ```sh
-$ 
 $ git clone https://github.com/F4zii/shwift
 $ pip install -r requirements.txt
 ```
