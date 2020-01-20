@@ -30,7 +30,6 @@ $ pip install -r requirements.txt
 
 ### Todos
 
- - Reduce Loading folder time
  - Toggle stylesheets and app style
 
 License
