@@ -41,6 +41,9 @@ class TabWidget(QTabWidget):
     def remove_tab(self, index):
         widget = self.widget(index)
         if widget is not None:
+            wname = widget.filename.split('-')
+            if len(wname) == 2 and int(wname[1])+1 == self.new_file_count:
+                self.new_file_count -= 1
             widget.deleteLater()
             self.removeTab(index)
             widget = None
