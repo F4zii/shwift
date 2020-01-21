@@ -40,7 +40,6 @@ class Ui_MainWindow(QMainWindow):
         self.setAcceptDrops(True)
         self.shellWin = Terminal()
         self.setCentralWidget(self.shellWin)
-        self.setGeometry(0, 0, 600, 600)
         self.setWindowTitle("QTerminal")
         self.settings = QSettings("QTerminal", "QTerminal")
         self.readSettings()
