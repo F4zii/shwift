@@ -1,22 +1,46 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtGui import QIcon
 
-import pathlib
+import os
+
+from utils import FOLDER, DIR_CLOSED_ICON_PATH, get_icon_for_extention
 
 
 class PathWalkThread(QThread):
-    new_item = pyqtSignal(str)
 
-    def __init__(self, base_path = QDir.currentPath()):
+    def __init__(self, tree: QTreeWidget):
         super().__init__()
-        self.base_path = base_path
+        self.tree = tree
+        self.tree.clear()
+        self.base_path = self.tree.dirname
 
     def run(self):
-        for path in pathlib.Path(self.base_path).iterdir():
-            self.new_item.emit(str(path))
+        self.load_filesystem_view()
 
-# then later on in your code:
+
+    def load_filesystem_view(self):
+        """
+        Load Project structure tree
+        @param self.base_path
+        @param tree
+        @return
+        """
+
+
+        for element in os.listdir(self.base_path):
+            path_info = self.base_path + "/" + element
+            parent_itm = QTreeWidgetItem(self.tree, [os.path.basename(element)])
+            parent_itm.file_path = path_info
+            if os.path.isdir(path_info):
+                parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
+                parent_itm.item_type = "dir"
+                parent_itm.was_expanded = False
+                parent_itm.setChildIndicatorPolicy(QTreeWidgetItem.ShowIndicator)
+            else:
+                parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split(".")[-1])))
+                parent_itm.item_type = "file"
+
 
 
 class TreeViewUpdateThread(QThread):
