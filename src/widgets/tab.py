@@ -17,7 +17,7 @@ class TabWidget(QTabWidget):
         # self.textEdit = QTextEdit(self._parent)
         # self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
         self._translate = QCoreApplication.translate
-        self.new_file_count = 0
+        self._untitled_file_count = 0
         self.currentChanged.connect(self._on_tab_change)
         self.tabCloseRequested.connect(self.remove_tab)
         self.last_widget = None
@@ -35,15 +35,15 @@ class TabWidget(QTabWidget):
         return tab
 
     def create_untitled_tab(self):
-        self.new_file_count += 1
-        return self.create_tab("", f"Untitled-{self.new_file_count-1}")
+        self._untitled_file_count += 1
+        return self.create_tab("", f"Untitled-{self._untitled_file_count-1}")
 
     def remove_tab(self, index):
         widget = self.widget(index)
         if widget is not None:
             wname = widget.filename.split('-')
-            if len(wname) == 2 and int(wname[1])+1 == self.new_file_count:
-                self.new_file_count -= 1
+            if len(wname) == 2 and int(wname[1])+1 == self._untitled_file_count:
+                self._untitled_file_count -= 1
             widget.deleteLater()
             self.removeTab(index)
             widget = None
@@ -90,7 +90,7 @@ class Tab(QWidget):
 
     def external_init(self):
         if self._filepath.startswith("Untitled"):
-            self._file_name = f"Untitled-{self._parent.new_file_count-1}"
+            self._file_name = f"Untitled-{self._parent._untitled_file_count-1}"
             return
         basename = os.path.basename(self._filepath)
         treeView = self._parent.window.treeView
