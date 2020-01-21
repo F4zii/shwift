@@ -7,7 +7,7 @@ from utils import FOLDER, DIR_CLOSED_ICON_PATH, get_icon_for_extention
 
 
 class PathWalkThread(QThread):
-    new_item = qt.pyqtSignal(str)
+    new_item = pyqtSignal(str)
 
     def __init__(self, tree: QTreeWidget):
         super().__init__()
