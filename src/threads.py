@@ -1,16 +1,17 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
-
 import os
 
 from utils import FOLDER, DIR_CLOSED_ICON_PATH, get_icon_for_extention
 
 
 class PathWalkThread(QThread):
+    new_item = qt.pyqtSignal(str)
 
     def __init__(self, tree: QTreeWidget):
         super().__init__()
+        tree.moveToThread(QApplication.instance().thread())
         self.tree = tree
         self.tree.clear()
         self.base_path = self.tree.dirname

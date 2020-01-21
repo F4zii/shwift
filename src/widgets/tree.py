@@ -18,8 +18,7 @@ class TreeFileWidget(QTreeWidget):
         # self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
         self.itemEntered.connect(self.on_item_entered)
-        self.path_walk_thread = PathWalkThread()
-        self._update_signal = self.path_walk_thread.new_item
+        self.path_walk_thread = PathWalkThread(self)
 
     @property
     def parent(self):
