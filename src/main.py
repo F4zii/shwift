@@ -94,7 +94,7 @@ class Ui_MainWindow(QMainWindow):
             folder = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if not os.path.isdir(folder):
             return
-        print("F: ", folder)
+
 
         load_filesystem_view(folder, self.treeView)
         self.treeView.dirname = folder
