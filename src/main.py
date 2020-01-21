@@ -156,7 +156,7 @@ class Ui_MainWindow(QMainWindow):
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(190, 55, 1720, 850))
         self.font = QtGui.QFont()
-        self.font.setFamily("Consolas")
+        # self.font.setFamily("Consolas")
         self.font.setPointSize(16)
         self.textEdit.setFont(self.font)
         self.tabs = TabWidget(self, self.centralwidget)
@@ -296,7 +296,7 @@ class Ui_MainWindow(QMainWindow):
         self.actionOpenFolder.setStatusTip(
             self.translate("MainWindow", "Open a folder from your system")
         )
-        self.actionOpenFolder.setShortcut(self.translate("MainWindow", "Ctrl+F+O"))
+        self.actionOpenFolder.setShortcut(self.translate("MainWindow", "Ctrl+Shift+O"))
         self.actionOpenFolder.triggered.connect(self.open_folder)
 
         self.actionSave.setText(self.translate("MainWindow", "Save"))
