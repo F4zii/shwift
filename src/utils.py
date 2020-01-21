@@ -16,9 +16,13 @@ import glob, os
 from os import walk
 
 
-DIR_CLOSED_ICON_PATH = "./assets/folder_closed.ico"
-DIR_OPENED_ICON_PATH = "./assets/folder_opened.ico"
-FILE_ICON_PATH = "./assets/file.ico"
+
+
+FOLDER = os.path.dirname(os.path.realpath(__file__))
+
+DIR_CLOSED_ICON_PATH = f"{FOLDER}/assets/folder_closed.ico"
+DIR_OPENED_ICON_PATH = f"{FOLDER}/assets/folder_opened.ico"
+FILE_ICON_PATH = f"{FOLDER}/assets/file.ico"
 
 
 def create_label(window, name: str):
@@ -59,29 +63,23 @@ def load_filesystem_view(startpath, tree):
 
     for element in os.listdir(startpath):
         path_info = startpath + "/" + element
-        print(path_info)
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
         parent_itm.file_path = path_info
         if os.path.isdir(path_info):
-            # load_filesystem_view(path_info, parent_itm)
-            print("Its a dir!", element)
             parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
             parent_itm.item_type = "dir"
             parent_itm.was_expanded = False
-            # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
 
         else:
-            print("Its a file! ", element.split(".")[-1])
             parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split(".")[-1])))
             parent_itm.item_type = "file"
 
-            # parent_itm.setExpanded( True ) if we want to show the whole tree expanded
 
 
 def get_icon_for_extention(ext: str):
-    if not os.path.isdir(f"./assets/langs/{ext}"):
-        return "./assets/file.ico"
-    return f"./assets/langs/{ext}/{ext}.ico"
+    if not os.path.isdir(f"{FOLDER}/assets/langs/{ext}"):
+        return f"{FOLDER}/assets/file.ico"
+    return f"{FOLDER}/assets/langs/{ext}/{ext}.ico"
 
 
 def openFileNameDialog():
