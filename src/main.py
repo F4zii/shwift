@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow, QFileDialog
-from PyQt5.QtCore import QDir, QFile, QTextStream, QRect, QSettings
+from PyQt5.QtCore import QDir, QFile, QTextStream, QRect, QSettings, QFileSystemWatcher
 from PyQt5.QtGui import *
 
 import stylesheets
@@ -30,7 +30,7 @@ from tools import Terminal
 from threads import TreeViewUpdateThread
 
 
-# TODO Only load after expandation, clear code
+# TODO clear code
 # https://doc.qt.io/qt-5/qfilesystemwatcher.html
 
 class Ui_MainWindow(QMainWindow):
@@ -164,6 +164,7 @@ class Ui_MainWindow(QMainWindow):
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
+        self.watcher = QFileSystemWatcher(['.'])
         # self.tabs.create_untitled_tab()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
