@@ -385,7 +385,5 @@ if __name__ == "__main__":
     theme_file.open(QFile.ReadOnly | QFile.Text)
     stream = QTextStream(theme_file)
     app.setStyleSheet(stream.readAll())
-    # MainWindow.setContentsMargins(10, 10, 10, 10)
-    MainWindow.show()
     MainWindow.showMaximized()
     sys.exit(app.exec_())
