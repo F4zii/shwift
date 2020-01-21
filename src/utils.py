@@ -69,6 +69,7 @@ def load_filesystem_view(startpath, tree):
             parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
             parent_itm.item_type = "dir"
             parent_itm.was_expanded = False
+            QTreeWidgetItem(parent_itm, [""])
 
         else:
             parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split(".")[-1])))
