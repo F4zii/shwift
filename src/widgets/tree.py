@@ -59,14 +59,15 @@ class TreeFileWidget(QTreeWidget):
         if it.item_type == "file":
             self._window.open_file(self.currentItem().file_path)
 
-        if it.item_type == "dir" and not it.was_expanded:
-            load_filesystem_view(it.file_path, it)
+        if it.item_type == "dir":
+            if not it.was_expanded:
+                load_filesystem_view(it.file_path, it)
+                it.was_expanded = True
             self.toggle_folder_icon(it)
 
             
     def on_item_expanded(self, it):
         if it.item_type == "dir":
-            print("Here")
             if not it.was_expanded:
                 load_filesystem_view(it.file_path, it)
                 it.was_expanded = True
@@ -78,12 +79,10 @@ class TreeFileWidget(QTreeWidget):
         # loop.exec_()
         expanded = item.isExpanded()
         if expanded:
-            item.setExpanded(False)
-            item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
+            item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
 
         else:
-            item.setExpanded(True)
-            item.setIcon(0, QIcon(DIR_OPENED_ICON_PATH))
+            item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
 
 
 
