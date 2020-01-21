@@ -56,16 +56,19 @@ class TreeFileWidget(QTreeWidget):
         @param it - The TreeWidgetItem that was clicked
         @param col - The column of the TreeWidgetItem that was clicked
         """
-        if it.item_type == "dir":
-            load_filesystem_view(it.file_path, it)
-            self.toggle_folder_icon(it)
 
         if it.item_type == "file":
             self._window.open_file(self.currentItem().file_path)
 
-    # def on_item_expanded(self, it):
-    #     if it.item_type == "dir":
-    #         self.toggle_folder_icon(it)
+        if it.item_type == "dir" and not it.was_expanded:
+            load_filesystem_view(it.file_path, it)
+            self.toggle_folder_icon(it)
+
+            
+    def on_item_expanded(self, it):
+        if it.item_type == "dir":
+            load_filesystem_view(it.file_path, it)
+            self.toggle_folder_icon(it)
 
     def toggle_folder_icon(self, item):
         # loop = QEventLoop()

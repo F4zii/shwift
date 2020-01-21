@@ -94,6 +94,7 @@ class Ui_MainWindow(QMainWindow):
             folder = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if not os.path.isdir(folder):
             return
+        print("F: ", folder)
 
         load_filesystem_view(folder, self.treeView)
         self.treeView.dirname = folder
@@ -377,7 +378,7 @@ class Ui_MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # ['Breeze', 'Oxygen', 'QtCurve', 'Windows', 'Fusion']
-    app.setStyle('Fusion')
+    app.setStyle('Breeze')
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
