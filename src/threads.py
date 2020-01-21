@@ -1,8 +1,23 @@
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from PyQt5.QtCore import QThread, pyqtSignal
 
-import time
+import pathlib
 
-from utils import get_file_list
+
+class PathWalkThread(QThread):
+    new_item = pyqtSignal(str)
+
+    def __init__(self, base_path = QDir.currentPath()):
+        super().__init__()
+        self.base_path = base_path
+
+    def run(self):
+        for path in pathlib.Path(self.base_path).iterdir():
+            self.new_item.emit(str(path))
+
+# then later on in your code:
+
 
 class TreeViewUpdateThread(QThread):
 

@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 
 
-from threads import TreeViewUpdateThread
+from threads import PathWalkThread
 
 from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, load_filesystem_view
 
@@ -14,12 +14,12 @@ class TreeFileWidget(QTreeWidget):
         self._parent = parent
         self._window = windowUi
         self._dirname = ''
-        # self.itemExpanded.connect(self.on_item_expanded)
+        self.itemExpanded.connect(self.on_item_expanded)
         # self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
         self.itemEntered.connect(self.on_item_entered)
-        self._update_signal = TreeViewUpdateThread(dirname='.').tree_view_modified
-        self.clicks = 0
+        self.path_walk_thread = PathWalkThread()
+        self._update_signal = self.path_walk_thread.new_item
 
     @property
     def parent(self):
@@ -67,7 +67,10 @@ class TreeFileWidget(QTreeWidget):
             
     def on_item_expanded(self, it):
         if it.item_type == "dir":
-            load_filesystem_view(it.file_path, it)
+            print("Here")
+            if not it.was_expanded:
+                load_filesystem_view(it.file_path, it)
+                it.was_expanded = True
             self.toggle_folder_icon(it)
 
     def toggle_folder_icon(self, item):
