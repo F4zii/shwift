@@ -15,7 +15,7 @@ class TreeFileWidget(QTreeWidget):
         self._window = windowUi
         self._dirname = ''
         self.itemExpanded.connect(self.on_item_expanded)
-        # self.itemCollapsed.connect(self.on_item_expanded)
+        self.itemCollapsed.connect(self.on_item_expanded)
         self.itemClicked.connect(self.on_item_clicked)
         self.itemEntered.connect(self.on_item_entered)
         self.path_walk_thread = PathWalkThread(self)
@@ -63,7 +63,8 @@ class TreeFileWidget(QTreeWidget):
             if not it.was_expanded:
                 load_filesystem_view(it.file_path, it)
                 it.was_expanded = True
-            self.toggle_folder_icon(it)
+            it.setExpanded(not it.isExpanded())
+            # self.toggle_folder_icon(it)
 
             
     def on_item_expanded(self, it):
