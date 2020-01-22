@@ -30,7 +30,7 @@ from tools import Terminal
 from threads import TreeViewUpdateThread
 
 
-# TODO clear code
+# TODO Max OOP if possible 
 # https://doc.qt.io/qt-5/qfilesystemwatcher.html
 
 class Ui_MainWindow(QMainWindow):
@@ -39,8 +39,8 @@ class Ui_MainWindow(QMainWindow):
         self.translate = QtCore.QCoreApplication.translate
         self.setAcceptDrops(True)
         self.shellWin = Terminal()
-        self.setCentralWidget(self.shellWin)
-        self.setWindowTitle("QTerminal")
+        # self.setCentralWidget(self.shellWin)
+        self.shellWin.setWindowTitle("QTerminal")
         self.settings = QSettings("QTerminal", "QTerminal")
         self.readSettings()
 
@@ -377,7 +377,7 @@ class Ui_MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # ['Breeze', 'Oxygen', 'QtCurve', 'Windows', 'Fusion']
-    app.setStyle('Breeze')
+    app.setStyle('Windows')
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)

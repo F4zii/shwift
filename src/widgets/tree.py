@@ -57,6 +57,11 @@ class TreeFileWidget(QTreeWidget):
         """
 
         if it.item_type == "file":
+            tabs = self._window.tabs
+            for i in range(tabs.count()):
+                item = tabs.widget(i)
+                if item.filepath == it.file_path:
+                    return tabs.setCurrentWidget(item)
             self._window.open_file(self.currentItem().file_path)
 
         if it.item_type == "dir":
