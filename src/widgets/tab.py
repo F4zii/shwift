@@ -49,6 +49,7 @@ class TabWidget(QTabWidget):
             widget = None
         if self.count() == 0:
             self._window.textEdit.setText('')
+            self._untitled_file_count = 0
 
     def _on_tab_change(self, i):
         curr_tab = self.currentWidget()
