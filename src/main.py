@@ -155,7 +155,6 @@ class Ui_MainWindow(QMainWindow):
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(190, 55, 1720, 850))
         self.font = QtGui.QFont()
-        # self.font.setFamily("Consolas")
         self.font.setPointSize(16)
         self.textEdit.setFont(self.font)
         self.tabs = TabWidget(self, self.centralwidget)
