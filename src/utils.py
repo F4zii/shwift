@@ -65,7 +65,7 @@ def load_filesystem_view(startpath, tree):
     for element in os.listdir(startpath):
         path_info = startpath + "/" + element
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
-        parent_itm.file_path = path_info
+        parent_itm.filepath = path_info
         if os.path.isdir(path_info):
             parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
             parent_itm.item_type = "dir"

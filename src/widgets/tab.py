@@ -12,7 +12,7 @@ from utils import is_file_in, get_relative_path
 class TabWidget(QTabWidget):
     def __init__(self, window, parent=None):
         super(QTabWidget, self).__init__(parent)
-        self.window = window
+        self._window = window
         self._parent = parent
         # self.textEdit = QTextEdit(self._parent)
         # self.textEdit.setGeometry(QRect(180, 40, 1650, 850))
@@ -23,7 +23,7 @@ class TabWidget(QTabWidget):
         self.last_widget = None
         self.text_modified = False
 
-        self.window.textEdit.textChanged.connect(self.save_current_text)
+        self._window.textEdit.textChanged.connect(self.save_current_text)
 
     def create_tab(self, text, filepath: str, closable: bool = True):
         tab = Tab(text=text, filepath=filepath, parent=self)
@@ -47,28 +47,30 @@ class TabWidget(QTabWidget):
             widget.deleteLater()
             self.removeTab(index)
             widget = None
+        if self.count() == 0:
+            self._window.textEdit.setText('')
 
     def _on_tab_change(self, i):
         curr_tab = self.currentWidget()
         self.save_current_text()
         self.last_widget = curr_tab
         if curr_tab is None:
-            # self.window.mainLayout.removeWidget(self.window.textEdit)
-            self.window.text = ""
+            # self._window.mainLayout.removeWidget(self._window.textEdit)
+            self._window.text = ""
             return
 
         if curr_tab is None:
             curr_tab = self.create_untitled_tab()
 
-        if self.window.textEdit:
-            self.window.textEdit.setText(curr_tab.text)
+        if self._window.textEdit:
+            self._window.textEdit.setText(curr_tab.text)
 
     def save_current_text(self):
         self.text_modified = True
         widget = self.get_last_widget()
         if not widget:
             return
-        content = self.window.textEdit.toPlainText()
+        content = self._window.textEdit.toPlainText()
         if content:
             widget.text = content
 
@@ -93,7 +95,7 @@ class Tab(QWidget):
             self._file_name = f"Untitled-{self._parent._untitled_file_count-1}"
             return
         basename = os.path.basename(self._filepath)
-        treeView = self._parent.window.treeView
+        treeView = self._parent._window.treeView
         if is_file_in(filepath=basename, directory=treeView.dirname):
             self._file_name = basename
         else:

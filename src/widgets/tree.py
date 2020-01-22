@@ -60,13 +60,13 @@ class TreeFileWidget(QTreeWidget):
             tabs = self._window.tabs
             for i in range(tabs.count()):
                 item = tabs.widget(i)
-                if item.filepath == it.file_path:
+                if item.filepath == it.filepath:
                     return tabs.setCurrentWidget(item)
-            self._window.open_file(self.currentItem().file_path)
+            self._window.open_file(self.currentItem().filepath)
 
         if it.item_type == "dir":
             if not it.was_expanded:
-                load_filesystem_view(it.file_path, it)
+                load_filesystem_view(it.filepath, it)
                 it.was_expanded = True
             it.setExpanded(not it.isExpanded())
             # self.toggle_folder_icon(it)
@@ -75,7 +75,7 @@ class TreeFileWidget(QTreeWidget):
     def on_item_expanded(self, it):
         if it.item_type == "dir":
             if not it.was_expanded:
-                load_filesystem_view(it.file_path, it)
+                load_filesystem_view(it.filepath, it)
                 it.was_expanded = True
             self.toggle_folder_icon(it)
 
@@ -94,8 +94,8 @@ class TreeFileWidget(QTreeWidget):
 
 
 class TreeFileWidgetItem(QTreeWidgetItem):
-    def __init__(self, tree, text, file_path: str, type: str):
+    def __init__(self, tree, text, filepath: str, type: str):
         super().__init__()
-        self.path = file_path
-        # self.file_path = file_path
+        self.path = filepath
+        # self.filepath = filepath
         # self.type = type

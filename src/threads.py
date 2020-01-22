@@ -32,7 +32,7 @@ class PathWalkThread(QThread):
         for element in os.listdir(self.base_path):
             path_info = self.base_path + "/" + element
             parent_itm = QTreeWidgetItem(self.tree, [os.path.basename(element)])
-            parent_itm.file_path = path_info
+            parent_itm.filepath = path_info
             if os.path.isdir(path_info):
                 parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
                 parent_itm.item_type = "dir"
