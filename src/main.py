@@ -30,7 +30,7 @@ from tools import Terminal
 from threads import TreeViewUpdateThread
 
 
-# TODO Max OOP if possible 
+# TODO Max OOP if possible
 # https://doc.qt.io/qt-5/qfilesystemwatcher.html
 
 class Ui_MainWindow(QMainWindow):
@@ -111,9 +111,9 @@ class Ui_MainWindow(QMainWindow):
     #         outstr = QTextStream(file)
     #         QApplication.setOverrideCursor(Qt.WaitCursor)
     #         outstr << self.textEdit.toPlainText()
-    #         QApplication.restoreOverrideCursor()                
+    #         QApplication.restoreOverrideCursor()
     #         self.setModified(False)
-    #         curr_tab.filename = QFileInfo(curr_tab.filename).fileName() 
+    #         curr_tab.filename = QFileInfo(curr_tab.filename).fileName()
     #         self.setWindowTitle(self.fname + "[*]")
     #         self.setCurrentFile(self.filename)
 
@@ -143,7 +143,7 @@ class Ui_MainWindow(QMainWindow):
     #     if ret == QMessageBox.Cancel:
     #         return False
 
-    #     return True   
+    #     return True
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -152,7 +152,7 @@ class Ui_MainWindow(QMainWindow):
         self.mainLayout = QVBoxLayout()
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit = Editor(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(190, 55, 1720, 850))
         self.font = QtGui.QFont()
         self.font.setPointSize(16)
@@ -198,6 +198,9 @@ class Ui_MainWindow(QMainWindow):
 
         self.actionNew = QtWidgets.QAction(MainWindow)
         self.actionNew.setObjectName("actionNew")
+
+        self.actionGotoEnd = QtWidgets.QAction(MainWindow)
+        self.actionGotoEnd.setObjectName("actionGotoEnd")
 
         self.actionOpen = QtWidgets.QAction(MainWindow)
         self.actionOpen.setObjectName("actionOpen")
@@ -263,9 +266,11 @@ class Ui_MainWindow(QMainWindow):
         self.menuEdit.addAction(self.actionFind)
         self.menuEdit.addAction(self.actionReplace)
         self.menuView.addAction(self.actionToggle_Line_Numbers)
+        self.menuView.addAction(self.actionGotoEnd)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
+
 
         self.retranslateUi(MainWindow)
         self.tabs.setCurrentIndex(1)
@@ -341,6 +346,13 @@ class Ui_MainWindow(QMainWindow):
         self.actionToggle_Line_Numbers.setShortcut(
             self.translate("MainWindow", "Ctrl+L, N")
         )
+        self.actionGotoEnd.setText(self.translate("MainWindow", "Goto end of file"))
+        self.actionGotoEnd.setStatusTip(
+            self.translate("MainWindow", "Goto the end of the current file")
+        )
+        self.actionGotoEnd.setShortcut(self.translate("MainWindow", "Ctrl+E"))
+        self.actionGotoEnd.triggered.connect(self.textEdit.goto_buffer_end)
+
 
         def initUI(self):
             # formatting
