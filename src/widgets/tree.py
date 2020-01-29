@@ -10,7 +10,7 @@ from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, load_filesystem_vi
 
 class TreeFileWidget(QTreeWidget):
     def __init__(self, windowUi, parent=None):
-        QTreeWidget.__init__(self, parent)
+        super(QTreeWidget, self).__init__(parent)
         self._parent = parent
         self._window = windowUi
         self._dirname = ''
@@ -71,7 +71,7 @@ class TreeFileWidget(QTreeWidget):
             it.setExpanded(not it.isExpanded())
             # self.toggle_folder_icon(it)
 
-            
+
     def on_item_expanded(self, it):
         if it.item_type == "dir":
             if not it.was_expanded:
