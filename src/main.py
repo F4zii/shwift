@@ -37,30 +37,6 @@ class Ui_MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.translate = QtCore.QCoreApplication.translate
-        self.setAcceptDrops(True)
-        self.shellWin = Terminal()
-        # self.setCentralWidget(self.shellWin)
-        self.shellWin.setWindowTitle("QTerminal")
-        self.settings = QSettings("QTerminal", "QTerminal")
-        self.readSettings()
-
-    def closeEvent(self, e):
-        self.writeSettings()
-
-    def readSettings(self):
-        if self.settings.contains("commands"):
-            self.shellWin.commands = self.settings.value("commands")
-        if self.settings.contains("pos"):
-            pos = self.settings.value("pos", QPoint(200, 200))
-            self.move(pos)
-        if self.settings.contains("size"):
-            size = self.settings.value("size", QSize(400, 400))
-            self.resize(size)
-
-    def writeSettings(self):
-        self.settings.setValue("commands", self.shellWin.commands)
-        self.settings.setValue("pos", self.pos())
-        self.settings.setValue("size", self.size())
 
     def open_file(self, filepath: str = None):
         if not filepath:
@@ -72,7 +48,7 @@ class Ui_MainWindow(QMainWindow):
             content = f.read()
             if not self.textEdit:
                 e = Editor(self.centralwidget)
-                e.setText(self.translate("MainWindow", f.read()))
+                e.setPlainText(self.translate("MainWindow", f.read()))
                 self.textEdit = e
                 self.mainLayout.addWidget(self.textEdit)
             tab = self.tabs.create_tab(content, filepath=filepath)
@@ -171,7 +147,12 @@ class Ui_MainWindow(QMainWindow):
         self.treeView.setHeaderLabel("File System")
         self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 875))
         load_filesystem_view(self.treeView.dirname, self.treeView)
-
+        # self.splitter1 = QtWidgets.QSplitter(self.centralwidget)
+        # self.splitter1.addWidget(self.treeView)
+        # self.splitter1.addWidget(self.textEdit)
+        # # self.splitter.addWidget(self.textEdit)
+        # # self.splitter.setStretchFactor(1, 1)
+        # self.mainLayout.addWidget(self.splitter1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1900, 20))
@@ -360,10 +341,10 @@ class Ui_MainWindow(QMainWindow):
             self.setWindowTitle("Toychest")
 
             # widgets
-            self.toollist = QtGui.QTreeView()
+            # self.toollist = QtGui.QTreeView()
 
             # QTreeView use QStandardItemModel as data source
-            self.source_model = QtGui.QStandardItemModel()
+            # self.source_model = QtGui.QStandardItemModel()
 
             # Tabs
 
@@ -379,7 +360,7 @@ class Ui_MainWindow(QMainWindow):
             MainWindow.setLayout(self.mainLayout)
             self.setLayout(self.mainLayout)
             # set model for toollist
-            self.toollist.setModel(self.source_model)
+            # self.toollist.setModel(self.source_model)
 
         # utils.openFileNameDialog()
         # utils.openFileNamesDialog()
