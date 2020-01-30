@@ -47,8 +47,9 @@ class TabWidget(QTabWidget):
             widget.deleteLater()
             self.removeTab(index)
             widget = None
-        if self.count() == 0:
-            self._window.textEdit.setText('')
+
+        elif self.count() == 0:
+            self._window.textEdit.setPlainText('')
             self._untitled_file_count = 0
 
     def _on_tab_change(self, i):
@@ -64,7 +65,7 @@ class TabWidget(QTabWidget):
             curr_tab = self.create_untitled_tab()
 
         if self._window.textEdit:
-            self._window.textEdit.setText(curr_tab.text)
+            self._window.textEdit.setPlainText(curr_tab.text)
 
     def save_current_text(self):
         self.text_modified = True
