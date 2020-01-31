@@ -10,7 +10,7 @@ from utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, load_filesystem_vi
 
 class TreeFileWidget(QTreeWidget):
     def __init__(self, windowUi, parent=None):
-        super(QTreeWidget, self).__init__(parent)
+        super(TreeFileWidget, self).__init__(parent)
         self._parent = parent
         self._window = windowUi
         self._dirname = ''
