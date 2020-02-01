@@ -41,14 +41,22 @@ class TabWidget(QTabWidget):
     def remove_tab(self, index):
         widget = self.widget(index)
         if widget is not None:
-            wname = widget.filename.split('-')
-            if len(wname) == 2 and int(wname[1])+1 == self._untitled_file_count:
+            widget_name = widget.filename.split('-')
+            try:
+                print(widget_name, len(widget_name) == 2 and widget_name[0] == 'Untitled', int(widget_name[1]) + 1)
+            except:
+                pass
+
+            if len(widget_name) == 2 and \
+                    widget_name[0] == 'Untitled' and \
+                    int(widget_name[1]) + 1 == self._untitled_file_count:
                 self._untitled_file_count -= 1
+
             widget.deleteLater()
             self.removeTab(index)
             widget = None
 
-        elif self.count() == 0:
+        if self.count() == 0:
             self._window.textEdit.setPlainText('')
             self._untitled_file_count = 0
 
