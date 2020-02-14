@@ -12,6 +12,8 @@ from widgets.tab import TabWidget
 from widgets.tree import TreeFileWidget
 from widgets.ui_widgets import Editor
 
+import stylesheets
+
 
 # from pygments.lexers import get_lexer_for_filename
 # from pygments import highlight
