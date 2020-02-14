@@ -42,11 +42,6 @@ class TabWidget(QTabWidget):
         widget = self.widget(index)
         if widget is not None:
             widget_name = widget.filename.split('-')
-            try:
-                print(widget_name, len(widget_name) == 2 and widget_name[0] == 'Untitled', int(widget_name[1]) + 1)
-            except:
-                pass
-
             if len(widget_name) == 2 and \
                     widget_name[0] == 'Untitled' and \
                     int(widget_name[1]) + 1 == self._untitled_file_count:
