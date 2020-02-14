@@ -61,7 +61,7 @@ class TabWidget(QTabWidget):
             # self._window.mainLayout.removeWidget(self._window.textEdit)
             self._window.text = ""
             return
-
+        print(curr_tab.filepath)
         if self._window.textEdit:
             self._window.textEdit.setPlainText(curr_tab.text)
 
