@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 import os
 
-from utils.utils import FOLDER, DIR_CLOSED_ICON_PATH, get_icon_for_extention
+from utils.utils import FOLDER, DIR_CLOSED_ICON_PATH, get_icon_for_extension
 
 
 class PathWalkThread(QThread):
@@ -39,7 +39,7 @@ class PathWalkThread(QThread):
                 parent_itm.was_expanded = False
                 parent_itm.setChildIndicatorPolicy(QTreeWidgetItem.ShowIndicator)
             else:
-                parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split(".")[-1])))
+                parent_itm.setIcon(0, QIcon(get_icon_for_extension(element.split(".")[-1])))
                 parent_itm.item_type = "file"
 
 

@@ -23,6 +23,7 @@ import os
 
 from utils import utils
 
+
 # from .core.utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
 
 # from .tools.tools import Terminal
@@ -70,7 +71,6 @@ class Ui_MainWindow(QMainWindow):
         if not os.path.isdir(folder):
             return
 
-
         load_filesystem_view(folder, self.treeView)
         self.treeView.dirname = folder
 
@@ -92,7 +92,6 @@ class Ui_MainWindow(QMainWindow):
     #         curr_tab.filename = QFileInfo(curr_tab.filename).fileName()
     #         self.setWindowTitle(self.fname + "[*]")
     #         self.setCurrentFile(self.filename)
-
 
     #     else:
     #         self.fileSaveAs()
@@ -252,7 +251,6 @@ class Ui_MainWindow(QMainWindow):
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
 
-
         self.retranslateUi(MainWindow)
         self.tabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -333,7 +331,6 @@ class Ui_MainWindow(QMainWindow):
         )
         self.actionGotoEnd.setShortcut(self.translate("MainWindow", "Ctrl+E"))
         self.actionGotoEnd.triggered.connect(self.textEdit.goto_buffer_end)
-
 
         def initUI(self):
             # formatting

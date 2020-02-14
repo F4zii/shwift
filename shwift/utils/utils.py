@@ -11,18 +11,18 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon
 
-import glob, os
+import os
 
 from os import walk
 
+import pathlib
 
+FOLDER = pathlib.Path.cwd()
 
-
-FOLDER = os.path.dirname(os.path.realpath(__file__))
-
-DIR_CLOSED_ICON_PATH = f"{FOLDER}/assets/folder_closed.ico"
-DIR_OPENED_ICON_PATH = f"{FOLDER}/assets/folder_opened.ico"
-FILE_ICON_PATH = f"{FOLDER}/assets/file.ico"
+ROOT_FOLDER = FOLDER.parent.joinpath("shwift")
+DIR_CLOSED_ICON_PATH = f"{ROOT_FOLDER}/assets/folder_closed.ico"
+DIR_OPENED_ICON_PATH = f"{ROOT_FOLDER}/assets/folder_opened.ico"
+FILE_ICON_PATH = f"{ROOT_FOLDER}/assets/file.ico"
 
 
 def create_label(window, name: str):
@@ -35,16 +35,16 @@ def label_set_text(label, text: str):
 
 
 ICONS = {
-    "py" : "python.ico",
-    "js" : "javascript.ico",
-    "c" : "c.ico",
-    "cpp" : "cpp.ico",
-    "cs" : "csharp.ico",
-    "java" : "java.ico",
-    "css" : "css.ico",
-    "html" : "html.ico",
-    "pl" : "perl.ico",
-    "php" : "php.ico"
+    "py": "python.ico",
+    "js": "javascript.ico",
+    "c": "c.ico",
+    "cpp": "cpp.ico",
+    "cs": "csharp.ico",
+    "java": "java.ico",
+    "css": "css.ico",
+    "html": "html.ico",
+    "pl": "perl.ico",
+    "php": "php.ico"
 }
 
 
@@ -57,27 +57,26 @@ def load_filesystem_view(startpath, tree):
     """
 
     if not startpath:
-        return 
+        return
 
     if isinstance(tree, QTreeWidget):
         tree.clear()
-
-    for element in os.listdir(startpath):
-        path_info = startpath + "/" + element
+    curr_dir = pathlib.Path(startpath)
+    for element in curr_dir.glob('**/*'):
+        path_info = curr_dir.joinpath(element)
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
         parent_itm.filepath = path_info
-        if os.path.isdir(path_info):
+        if path_info.is_dir():
             parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
             parent_itm.item_type = "dir"
             parent_itm.was_expanded = False
             parent_itm.setChildIndicatorPolicy(QTreeWidgetItem.ShowIndicator)
         else:
-            parent_itm.setIcon(0, QIcon(get_icon_for_extention(element.split(".")[-1])))
+            parent_itm.setIcon(0, QIcon(get_icon_for_extension(path_info.suffix)))
             parent_itm.item_type = "file"
 
 
-
-def get_icon_for_extention(ext: str):
+def get_icon_for_extension(ext: str):
     if not os.path.isdir(f"{FOLDER}/assets/langs/{ext}"):
         return f"{FOLDER}/assets/file.ico"
     return f"{FOLDER}/assets/langs/{ext}/{ext}.ico"
@@ -124,10 +123,9 @@ def saveFileDialog():
 
 
 def get_file_name(curr_file):
-    here = os.path.dirname(os.path.abspath(__file__))
+    here = pathlib.Path(__file__).parent
 
-    return os.path.join(here, str(curr_file))
-
+    return here.joinpath(str(curr_file))
 
 def toggle_stylesheet(path):
     """
@@ -171,6 +169,7 @@ def safe_file_read(filepath: str):
     except UnicodeDecodeError:
         pass
 
+
 def get_file_list(dirName):
     # create a list of file and sub directories 
     # names in the given directory 
@@ -185,5 +184,5 @@ def get_file_list(dirName):
             all_files = all_files + get_file_list(fullPath)
         else:
             all_files.append(fullPath)
-                
+
     return all_files
