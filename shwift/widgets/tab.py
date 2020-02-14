@@ -62,9 +62,6 @@ class TabWidget(QTabWidget):
             self._window.text = ""
             return
 
-        if curr_tab is None:
-            curr_tab = self.create_untitled_tab()
-
         if self._window.textEdit:
             self._window.textEdit.setPlainText(curr_tab.text)
 
