@@ -1,32 +1,23 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMainWindow, QFileDialog
-from PyQt5.QtCore import QDir, QFile, QTextStream, QRect, QSettings, QFileSystemWatcher
-from PyQt5.QtGui import *
+import os
+import sys
 
-import stylesheets
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QFile, QTextStream, QFileSystemWatcher
+from PyQt5.QtWidgets import QVBoxLayout, QMainWindow, QFileDialog
+
+from tools.tools import Terminal
+from utils import utils
+from utils.utils import load_filesystem_view
+from widgets.tab import TabWidget
+from widgets.tree import TreeFileWidget
+from widgets.ui_widgets import Editor
+
 
 # from pygments.lexers import get_lexer_for_filename
 # from pygments import highlight
 # from pygments.formatters import BBCodeFormatter
-
-from utils.utils import load_filesystem_view, toggle_stylesheet
-
-from widgets.tree import TreeFileWidget
-from widgets.tab import TabWidget
-from widgets.ui_widgets import Editor
-
-import sys
-
 # sys.path.insert(0, 'src\widgets')
-
-import os
-
-from utils import utils
-
-
 # from .core.utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
-
-# from .tools.tools import Terminal
 
 # from .core.threads import TreeViewUpdateThread
 
@@ -134,7 +125,7 @@ class Ui_MainWindow(QMainWindow):
         self.font.setPointSize(16)
         self.textEdit.setFont(self.font)
         self.tabs = TabWidget(self, self.centralwidget)
-        self.tabs.setGeometry(QtCore.QRect(190, 30, 1650, 100))
+        self.tabs.setGeometry(QtCore.QRect(190, 30, 1720, 100))
         self.tabs.setObjectName("Tabs")
         self.tabs.setTabsClosable(True)
         self.tabs.lower()
@@ -142,7 +133,9 @@ class Ui_MainWindow(QMainWindow):
         # self.tabs.create_untitled_tab()
         # self.tabs.tabBar().setTabButton(0, QtGui.QTabBar.RightSide,None)
         # self.tabs = dict()   # filename: Tab
-
+        self.terminal = Terminal()
+        self.terminal.setGeometry(QtCore.QRect(190, 900, 1720, 1200))
+        self.mainLayout.addChildWidget(self.terminal)
         self.treeView = TreeFileWidget(self, self.centralwidget)
         self.treeView.setHeaderLabel("File System")
         self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 875))
