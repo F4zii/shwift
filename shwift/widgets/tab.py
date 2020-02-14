@@ -91,8 +91,8 @@ class TabWidget(QTabWidget):
                 print(path)
                 filename = os.path.basename(path)
                 print(filename)
-                tab.setObjectName(filename)
-                tab.refresh()
+                tab.visible_name = filename
+                # tab.refresh()
 
 
 # TODO display images - https://stackoverflow.com/questions/28884213/displaying-an-image-on-pyqt
@@ -104,6 +104,7 @@ class Tab(QWidget):
         self._filepath = filepath
         self._visible_name = ""
         self.untitled = untitled
+        self._translate = QCoreApplication.translate
         self.external_init()
 
     def external_init(self):
@@ -133,9 +134,10 @@ class Tab(QWidget):
         return self._visible_name
 
     @visible_name.setter
-    def visible_name_setter(self, name: str):
-        self._filename = name
-        self.setObjectName(name)
+    def visible_name(self, name: str):
+        self._visible_name = name
+        parent = self._parent
+        parent.setTabText(parent.indexOf(self), self._translate("MainWindow", self._visible_name))
 
     def refresh(self):
         self.repaint()
