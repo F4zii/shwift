@@ -80,7 +80,6 @@ def get_icon_for_extension(ext: str):
     ext = ext.replace('.', '')
     assets = f"{ROOT_FOLDER}/assets"
     if not os.path.isdir(f"{assets}/langs/{ext}"):
-        print(f"{assets}/langs/{ext}")
         return f"{assets}/file.ico"
     return f"{assets}/langs/{ext}/{ext}.ico"
 
