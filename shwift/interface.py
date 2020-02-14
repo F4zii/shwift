@@ -62,7 +62,8 @@ class Ui_MainWindow(QMainWindow):
             folder = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if not os.path.isdir(folder):
             return
-
+        self.treeView.clear()
+        print(self.treeView.columnCount())
         load_filesystem_view(folder, self.treeView)
         self.treeView.dirname = folder
         self.tabs.update_tabs_by_folder(folder)
