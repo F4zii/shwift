@@ -1,9 +1,7 @@
-from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
-
+from PyQt5.QtWidgets import *
 
 from shwift.core.threads import PathWalkThread
-
 from shwift.utils.utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, load_filesystem_view
 
 
@@ -30,7 +28,6 @@ class TreeFileWidget(QTreeWidget):
     @property
     def dirname(self):
         return self._dirname
-
 
     @dirname.setter
     def dirname(self, name):
@@ -71,7 +68,6 @@ class TreeFileWidget(QTreeWidget):
             it.setExpanded(not it.isExpanded())
             # self.toggle_folder_icon(it)
 
-
     def on_item_expanded(self, it):
         if it.item_type == "dir":
             if not it.was_expanded:
@@ -89,8 +85,6 @@ class TreeFileWidget(QTreeWidget):
 
         else:
             item.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
-
-
 
 
 class TreeFileWidgetItem(QTreeWidgetItem):

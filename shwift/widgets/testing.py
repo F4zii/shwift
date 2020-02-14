@@ -1,41 +1,52 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-
-class Ui_TestQFileDialog(object):
-    def _open_file_dialog(self):
-        directory = str(QtWidgets.QFileDialog.getExistingDirectory())
-        self.lineEdit.setText('{}'.format(directory))
-
-    def _set_text(self, text):
-        return text
-
-    def setupUi(self, TestQFileDialog):
-        TestQFileDialog.setObjectName("TestQFileDialog")
-        TestQFileDialog.resize(240, 320)
-
-        self.toolButtonOpenDialog = QtWidgets.QToolButton(TestQFileDialog)
-        self.toolButtonOpenDialog.setGeometry(QtCore.QRect(210, 10, 25, 19))
-        self.toolButtonOpenDialog.setObjectName("toolButtonOpenDialog")
-        self.toolButtonOpenDialog.clicked.connect(self._open_file_dialog)
-
-        self.lineEdit = QtWidgets.QLineEdit(TestQFileDialog)
-        self.lineEdit.setEnabled(False)
-        self.lineEdit.setGeometry(QtCore.QRect(10, 10, 191, 20))
-        self.lineEdit.setObjectName("lineEdit")
-
-        self.retranslateUi(TestQFileDialog)
-        QtCore.QMetaObject.connectSlotsByName(TestQFileDialog)
-
-    def retranslateUi(self, TestQFileDialog):
-        _translate = QtCore.QCoreApplication.translate
-        TestQFileDialog.setWindowTitle(_translate("TestQFileDialog", "Dialog"))
-        self.toolButtonOpenDialog.setText(_translate("TestQFileDialog", "..."))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    TestQFileDialog = QtWidgets.QDialog()
-    ui = Ui_TestQFileDialog()
-    ui.setupUi(TestQFileDialog)
-    TestQFileDialog.show()
-    sys.exit(app.exec_())
+# from PyQt5 import QtWidgets, uic
+# from PyQt5.QtWidgets import QMessageBox
+# from PyQt5.QtWidgets import QMessageBox, QDialog, QFileDialog
+# import sys
+# import os
+# import subprocess
+#
+#
+# class Example(QtWidgets.QMainWindow):
+#     def __init__(self):
+#         super(Example, self).__init__()
+#         uic.loadUi('gui.ui', self)
+#         self.lineEdit.returnPressed.connect(self.doCMD)
+#         # self.pushButtonInstall.clicked.connect(self.onClick)
+#         self.working_dir = "."
+#
+#     def doCMD(self):
+#         cmd = self.lineEdit.text()
+#         self.lineEdit.setText("")
+#
+#         if "cd " in cmd:
+#             vals = cmd.split(" ")
+#             if vals[1][0] == "/":
+#                 self.working_dir = vals[1]
+#             else:
+#                 self.working_dir = self.working_dir + "/" + vals[1]
+#
+#             print(self.working_dir)
+#             subprocess.call(cmd, shell=True, cwd=self.working_dir)
+#
+#             self.textBrowser.setText(self.textBrowser.toPlainText() + "\n$ " + cmd)
+#         else:
+#             try:
+#                 result = subprocess.check_output(cmd, shell=True, cwd=self.working_dir)
+#             except Exception:
+#                 self.textBrowser.setText(f"$ An error has occurred, `{cmd}` is a wrong or unknown command")
+#             else:
+#                 self.textBrowser.setText(self.textBrowser.toPlainText() + "\n$ " + cmd + result.decode("utf-8"))
+#
+#         self.textBrowser.verticalScrollBar().setValue(self.textBrowser.verticalScrollBar().maximum())
+#
+#     # def onClick(self):
+#     #    if len(self.lineEditName.text()) < 1:
+#     #        QMessageBox.critical(self, "Install", "Install")
+#     #    else:
+#     #        os.system("sudo apt-get install " + self.lineEditName.text())
+#
+#
+# app = QtWidgets.QApplication([])
+# win = Example()
+# win.show()
+# sys.exit(app.exec())
