@@ -131,3 +131,4 @@ src/.DS_Store
 src/assets/themes/BreezeStyleSheets/
 *.xml
 *.iml
+.DS_Store
