@@ -73,6 +73,7 @@ class Ui_MainWindow(QMainWindow):
 
         load_filesystem_view(folder, self.treeView)
         self.treeView.dirname = folder
+        self.tabs.update_tabs_by_folder(folder)
 
     # def save_file(self):
     #     curr_tab = self.tabs.currentWidget()
