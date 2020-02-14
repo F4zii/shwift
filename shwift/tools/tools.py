@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets
 
 UI_FILE = os.path.join(os.path.dirname(__file__), 'gui.ui')
 
@@ -9,8 +9,8 @@ UI_FILE = os.path.join(os.path.dirname(__file__), 'gui.ui')
 class Terminal(QtWidgets.QMainWindow):
     def __init__(self):
         super(Terminal, self).__init__()
-        uic.loadUi(UI_FILE, self)
-        self.lineEdit.returnPressed.connect(self.doCMD)
+        # uic.loadUi(UI_FILE, self)
+        # self.lineEdit.returnPressed.connect(self.doCMD)
         # self.pushButtonInstall.clicked.connect(self.onClick)
         self.working_dir = "."
 

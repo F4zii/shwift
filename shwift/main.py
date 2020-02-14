@@ -135,7 +135,7 @@ class Ui_MainWindow(QMainWindow):
         # self.tabs = dict()   # filename: Tab
         self.terminal = Terminal()
         self.terminal.setGeometry(QtCore.QRect(190, 900, 1720, 1200))
-        self.mainLayout.addChildWidget(self.terminal)
+        # self.mainLayout.addChildWidget(self.terminal)
         self.treeView = TreeFileWidget(self, self.centralwidget)
         self.treeView.setHeaderLabel("File System")
         self.treeView.setGeometry(QtCore.QRect(10, 30, 170, 875))
