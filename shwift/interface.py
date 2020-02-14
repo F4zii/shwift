@@ -347,13 +347,8 @@ class Ui_MainWindow(QMainWindow):
             self.mainLayout.addWidget(self.toollist)
             self.mainLayout.addWidget(self.tabs)
             self.mainLayout.addWidget(self.treeView)
+            self.mainLayout.addWidget(self.terminal)
             # checking, maybe will change that to happen when opening
-            self.mainLayout.addChildWidget(self.textEdit)
-            MainWindow.setLayout(self.mainLayout)
-            self.setLayout(self.mainLayout)
+            self.mainLayout.addWidget(self.textEdit)
             # set model for toollist
             # self.toollist.setModel(self.source_model)
-
-        # utils.openFileNameDialog()
-        # utils.openFileNamesDialog()
-        # utils.saveFileDialog()
