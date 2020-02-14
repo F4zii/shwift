@@ -77,9 +77,12 @@ def load_filesystem_view(startpath, tree):
 
 
 def get_icon_for_extension(ext: str):
-    if not os.path.isdir(f"{FOLDER}/assets/langs/{ext}"):
-        return f"{FOLDER}/assets/file.ico"
-    return f"{FOLDER}/assets/langs/{ext}/{ext}.ico"
+    ext = ext.replace('.', '')
+    assets = f"{ROOT_FOLDER}/assets"
+    if not os.path.isdir(f"{assets}/langs/{ext}"):
+        print(f"{assets}/langs/{ext}")
+        return f"{assets}/file.ico"
+    return f"{assets}/langs/{ext}/{ext}.ico"
 
 
 def openFileNameDialog():
