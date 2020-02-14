@@ -14,6 +14,7 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    ui.setLayout(ui.mainLayout)
     theme_file = QFile(":/dark.qss")
     theme_file.open(QFile.ReadOnly | QFile.Text)
     stream = QTextStream(theme_file)
