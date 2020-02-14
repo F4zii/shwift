@@ -61,9 +61,9 @@ def load_filesystem_view(startpath, tree):
 
     if isinstance(tree, QTreeWidget):
         tree.clear()
-
-    for element in os.listdir(startpath):
-        path_info = startpath + "/" + element
+    curr_dir = pathlib.Path(startpath)
+    for element in curr_dir.glob('**/*'):
+        path_info = curr_dir.joinpath(element)
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
         parent_itm.filepath = path_info
         if os.path.isdir(path_info):
@@ -72,7 +72,7 @@ def load_filesystem_view(startpath, tree):
             parent_itm.was_expanded = False
             parent_itm.setChildIndicatorPolicy(QTreeWidgetItem.ShowIndicator)
         else:
-            parent_itm.setIcon(0, QIcon(get_icon_for_extension(element.split(".")[-1])))
+            parent_itm.setIcon(0, QIcon(get_icon_for_extension(path_info.suffix)))
             parent_itm.item_type = "file"
 
 
