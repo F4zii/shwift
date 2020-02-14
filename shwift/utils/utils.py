@@ -66,7 +66,7 @@ def load_filesystem_view(startpath, tree):
         path_info = curr_dir.joinpath(element)
         parent_itm = QTreeWidgetItem(tree, [os.path.basename(element)])
         parent_itm.filepath = path_info
-        if os.path.isdir(path_info):
+        if path_info.is_dir():
             parent_itm.setIcon(0, QIcon(DIR_CLOSED_ICON_PATH))
             parent_itm.item_type = "dir"
             parent_itm.was_expanded = False
@@ -123,10 +123,9 @@ def saveFileDialog():
 
 
 def get_file_name(curr_file):
-    here = os.path.dirname(os.path.abspath(__file__))
+    here = pathlib.Path(__file__).parent
 
-    return os.path.join(here, str(curr_file))
-
+    return here.joinpath(str(curr_file))
 
 def toggle_stylesheet(path):
     """
