@@ -97,19 +97,19 @@ class Tab(QWidget):
         self._parent = parent
         self.text = text
         self._filepath = filepath
-        self._file_name = ""
+        self._filename = ""
         self.external_init()
 
     def external_init(self):
-        if self._filepath.startswith("Untitled"):
-            self._file_name = f"Untitled-{self._parent._untitled_file_count-1}"
+        if str(self._filepath).startswith("Untitled"):
+            self._filename = f"Untitled-{self._parent._untitled_file_count-1}"
             return
         basename = os.path.basename(self._filepath)
         treeView = self._parent._window.treeView
         if is_file_in(filepath=basename, directory=treeView.dirname):
-            self._file_name = basename
+            self._filename = basename
         else:
-            self._file_name = get_relative_path(os.path.dirname(__file__), self._filepath)
+            self._filename = get_relative_path(os.path.dirname(__file__), self._filepath)
 
     @property
     def filepath(self):
@@ -117,4 +117,4 @@ class Tab(QWidget):
 
     @property
     def filename(self):
-        return self._file_name
+        return self._filename
