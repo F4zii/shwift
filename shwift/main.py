@@ -52,7 +52,7 @@ class Ui_MainWindow(QMainWindow):
             e.setPlainText(self.translate("MainWindow", f.read()))
             self.textEdit = e
             self.mainLayout.addWidget(self.textEdit)
-            self.tabs.create_tab(content, filepath=filepath)
+        self.tabs.create_tab(content, filepath=filepath)
 
     def save_file_as(self):
         curr_tab = self.tabs.currentWidget()
