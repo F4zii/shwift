@@ -18,10 +18,11 @@ import stylesheets
 # from pygments import highlight
 # from pygments.formatters import BBCodeFormatter
 # sys.path.insert(0, 'src\widgets')
-# from .core.utils import DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
-
+# from .core.utils import
+# (
+#    DIR_CLOSED_ICON_PATH, DIR_OPENED_ICON_PATH, FILE_ICON_PATH
+# )
 # from .core.threads import TreeViewUpdateThread
-
 
 # TODO Max OOP if possible
 # https://doc.qt.io/qt-5/qfilesystemwatcher.html
