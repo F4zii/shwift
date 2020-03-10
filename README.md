@@ -1,7 +1,7 @@
 # Shwift Text Editor
 
 
-Shwift is a cross-platform Text editor That supports programming.
+Shwift is a cross-platform text-editor that supports programming.
 
 
 
